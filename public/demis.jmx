@@ -1,0 +1,2820 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jmeterTestPlan version="1.2" properties="5.0" jmeter="5.6.3">
+  <hashTree>
+    <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="ADHOC TESTING">
+      <boolProp name="TestPlan.serialize_threadgroups">true</boolProp>
+      <elementProp name="TestPlan.user_defined_variables" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables">
+        <collectionProp name="Arguments.arguments"/>
+      </elementProp>
+      <boolProp name="TestPlan.functional_mode">false</boolProp>
+    </TestPlan>
+    <hashTree>
+      <ConfigTestElement guiclass="HttpDefaultsGui" testclass="ConfigTestElement" testname="LOCAL">
+        <stringProp name="HTTPSampler.domain">ingress.local</stringProp>
+        <stringProp name="HTTPSampler.protocol">https</stringProp>
+        <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables">
+          <collectionProp name="Arguments.arguments"/>
+        </elementProp>
+        <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
+      </ConfigTestElement>
+      <hashTree/>
+      <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="IGS FilePath">
+        <collectionProp name="Arguments.arguments">
+          <elementProp name="fastaFilePath" elementType="Argument">
+            <stringProp name="Argument.name">fastaFilePath</stringProp>
+            <stringProp name="Argument.value">./testdata/sequence4testing.fasta</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+        </collectionProp>
+        <stringProp name="TestPlan.comments">Absolute filepath needed</stringProp>
+      </Arguments>
+      <hashTree/>
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="LAB TOKEN" enabled="true">
+        <intProp name="ThreadGroup.num_threads">1</intProp>
+        <intProp name="ThreadGroup.ramp_time">1</intProp>
+        <boolProp name="ThreadGroup.same_user_on_next_iteration">true</boolProp>
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller">
+          <stringProp name="LoopController.loops">1</stringProp>
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+        </elementProp>
+      </ThreadGroup>
+      <hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="get_token" enabled="true">
+          <intProp name="HTTPSampler.concurrentPool">6</intProp>
+          <stringProp name="HTTPSampler.contentEncoding">utf-8</stringProp>
+          <stringProp name="HTTPSampler.path">/auth/realms/LAB/protocol/openid-connect/token</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.postBodyRaw">false</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="grant_type" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">true</boolProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+                <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                <stringProp name="Argument.name">grant_type</stringProp>
+                <stringProp name="Argument.value">password</stringProp>
+              </elementProp>
+              <elementProp name="client_id" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">true</boolProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+                <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                <stringProp name="Argument.name">client_id</stringProp>
+                <stringProp name="Argument.value">demis-adapter</stringProp>
+              </elementProp>
+              <elementProp name="username" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">true</boolProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+                <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                <stringProp name="Argument.name">username</stringProp>
+                <stringProp name="Argument.value">test-int</stringProp>
+              </elementProp>
+              <elementProp name="client_secret" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">true</boolProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+                <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                <stringProp name="Argument.name">client_secret</stringProp>
+                <stringProp name="Argument.value">secret_client_secret</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="BeanShell PreProcessor" enabled="true">
+            <stringProp name="filename"></stringProp>
+            <stringProp name="parameters"></stringProp>
+            <boolProp name="resetInterpreter">false</boolProp>
+            <stringProp name="script">vars.put(&quot;certName&quot;,&quot;demis-test-int&quot;);</stringProp>
+          </BeanShellPreProcessor>
+          <hashTree/>
+          <KeystoreConfig guiclass="TestBeanGUI" testclass="KeystoreConfig" testname="Keystore Configuration" enabled="true">
+            <stringProp name="clientCertAliasVarName">certName</stringProp>
+            <stringProp name="endIndex">-1</stringProp>
+            <stringProp name="preload">True</stringProp>
+            <stringProp name="startIndex">0</stringProp>
+          </KeystoreConfig>
+          <hashTree/>
+          <JSONPostProcessor guiclass="JSONPostProcessorGui" testclass="JSONPostProcessor" testname="JSON Extractor" enabled="true">
+            <stringProp name="JSONPostProcessor.referenceNames">ACCESSTOKEN</stringProp>
+            <stringProp name="JSONPostProcessor.jsonPathExprs">$.access_token</stringProp>
+            <stringProp name="JSONPostProcessor.match_numbers"></stringProp>
+            <stringProp name="Scope.variable"></stringProp>
+          </JSONPostProcessor>
+          <hashTree/>
+          <BeanShellPostProcessor guiclass="TestBeanGUI" testclass="BeanShellPostProcessor" testname="BeanShell PostProcessor" enabled="true">
+            <stringProp name="filename"></stringProp>
+            <stringProp name="parameters"></stringProp>
+            <boolProp name="resetInterpreter">false</boolProp>
+            <stringProp name="script">${__setProperty(AC_LAB, ${ACCESSTOKEN})};</stringProp>
+          </BeanShellPostProcessor>
+          <hashTree/>
+          <BeanShellPostProcessor guiclass="TestBeanGUI" testclass="BeanShellPostProcessor" testname="BeanShell PostProcessor" enabled="false">
+            <stringProp name="filename"></stringProp>
+            <stringProp name="parameters"></stringProp>
+            <boolProp name="resetInterpreter">false</boolProp>
+            <stringProp name="script">import org.apache.jmeter.util.JMeterUtils;
+import org.apache.commons.codec.binary.Base64;
+Token = vars.get(&quot;ACCESSTOKEN&quot;);
+log.info(Token);
+String[] tokens=Token.split(&quot;\\.&quot;);
+String sig=tokens[2];
+log.info(sig);
+byte[] sigchars = Base64.decodeBase64(sig);
+byte[] chars = {77};
+log.info(&quot;&quot; + sigchars.length);
+System.arraycopy(chars,0,sigchars,100,1);
+log.info(&quot;modified&quot;);
+String newSig=Base64.encodeBase64String(sigchars);
+log.info(newSig);
+String newToken = tokens[0]+&quot;.&quot;+tokens[1]+&quot;.&quot;+newSig;
+JMeterUtils.setProperty(&quot;AC_LAB&quot;,newToken);
+</stringProp>
+          </BeanShellPostProcessor>
+          <hashTree/>
+        </hashTree>
+      </hashTree>
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="HOSP TOKEN" enabled="true">
+        <intProp name="ThreadGroup.num_threads">1</intProp>
+        <intProp name="ThreadGroup.ramp_time">1</intProp>
+        <boolProp name="ThreadGroup.same_user_on_next_iteration">true</boolProp>
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller">
+          <stringProp name="LoopController.loops">1</stringProp>
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+        </elementProp>
+      </ThreadGroup>
+      <hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="get_token_hosp" enabled="true">
+          <intProp name="HTTPSampler.concurrentPool">6</intProp>
+          <stringProp name="HTTPSampler.contentEncoding">utf-8</stringProp>
+          <stringProp name="HTTPSampler.path">/auth/realms/HOSPITAL/protocol/openid-connect/token</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.postBodyRaw">false</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="grant_type" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">true</boolProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+                <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                <stringProp name="Argument.name">grant_type</stringProp>
+                <stringProp name="Argument.value">password</stringProp>
+              </elementProp>
+              <elementProp name="client_id" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">true</boolProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+                <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                <stringProp name="Argument.name">client_id</stringProp>
+                <stringProp name="Argument.value">demis-test</stringProp>
+              </elementProp>
+              <elementProp name="username" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">true</boolProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+                <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                <stringProp name="Argument.name">username</stringProp>
+                <stringProp name="Argument.value">11111</stringProp>
+              </elementProp>
+              <elementProp name="client_secret" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">true</boolProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+                <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                <stringProp name="Argument.name">client_secret</stringProp>
+                <stringProp name="Argument.value">secret_client_secret</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="BeanShell PreProcessor" enabled="true">
+            <stringProp name="filename"></stringProp>
+            <stringProp name="parameters"></stringProp>
+            <boolProp name="resetInterpreter">false</boolProp>
+            <stringProp name="script">vars.put(&quot;certName&quot;,&quot;demis-11111&quot;);</stringProp>
+          </BeanShellPreProcessor>
+          <hashTree/>
+          <KeystoreConfig guiclass="TestBeanGUI" testclass="KeystoreConfig" testname="Keystore Configuration" enabled="true">
+            <stringProp name="clientCertAliasVarName">certName</stringProp>
+            <stringProp name="endIndex">-1</stringProp>
+            <stringProp name="preload">True</stringProp>
+            <stringProp name="startIndex">0</stringProp>
+          </KeystoreConfig>
+          <hashTree/>
+          <JSONPostProcessor guiclass="JSONPostProcessorGui" testclass="JSONPostProcessor" testname="JSON Extractor" enabled="true">
+            <stringProp name="JSONPostProcessor.referenceNames">ACCESSTOKEN</stringProp>
+            <stringProp name="JSONPostProcessor.jsonPathExprs">$.access_token</stringProp>
+            <stringProp name="JSONPostProcessor.match_numbers"></stringProp>
+            <stringProp name="Scope.variable"></stringProp>
+          </JSONPostProcessor>
+          <hashTree/>
+          <BeanShellPostProcessor guiclass="TestBeanGUI" testclass="BeanShellPostProcessor" testname="BeanShell PostProcessor" enabled="true">
+            <stringProp name="filename"></stringProp>
+            <stringProp name="parameters"></stringProp>
+            <boolProp name="resetInterpreter">false</boolProp>
+            <stringProp name="script">${__setProperty(AC_HOSP, ${ACCESSTOKEN})};</stringProp>
+          </BeanShellPostProcessor>
+          <hashTree/>
+          <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+            <collectionProp name="HeaderManager.headers">
+              <elementProp name="" elementType="Header">
+                <stringProp name="Header.name">Accept</stringProp>
+                <stringProp name="Header.value">application/json</stringProp>
+              </elementProp>
+            </collectionProp>
+          </HeaderManager>
+          <hashTree/>
+        </hashTree>
+      </hashTree>
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="IGS TOKEN" enabled="true">
+        <intProp name="ThreadGroup.num_threads">1</intProp>
+        <intProp name="ThreadGroup.ramp_time">1</intProp>
+        <boolProp name="ThreadGroup.same_user_on_next_iteration">true</boolProp>
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller">
+          <stringProp name="LoopController.loops">1</stringProp>
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+        </elementProp>
+      </ThreadGroup>
+      <hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="get_token_igs" enabled="true">
+          <intProp name="HTTPSampler.concurrentPool">6</intProp>
+          <stringProp name="HTTPSampler.contentEncoding">utf-8</stringProp>
+          <stringProp name="HTTPSampler.path">/auth/realms/PORTAL/protocol/openid-connect/token</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.postBodyRaw">false</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="grant_type" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">true</boolProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+                <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                <stringProp name="Argument.name">grant_type</stringProp>
+                <stringProp name="Argument.value">password</stringProp>
+              </elementProp>
+              <elementProp name="client_id" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">true</boolProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+                <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                <stringProp name="Argument.name">client_id</stringProp>
+                <stringProp name="Argument.value">demis-test-password-grant</stringProp>
+              </elementProp>
+              <elementProp name="username" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">true</boolProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+                <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                <stringProp name="Argument.name">username</stringProp>
+                <stringProp name="Argument.value">test-igs</stringProp>
+              </elementProp>
+              <elementProp name="client_secret" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">true</boolProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+                <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                <stringProp name="Argument.name">client_secret</stringProp>
+                <stringProp name="Argument.value">secret_client_secret</stringProp>
+              </elementProp>
+              <elementProp name="password" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">true</boolProp>
+                <stringProp name="Argument.value">UserPassword1234#test-igs</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+                <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                <stringProp name="Argument.name">password</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="BeanShell PreProcessor" enabled="true">
+            <stringProp name="filename"></stringProp>
+            <stringProp name="parameters"></stringProp>
+            <boolProp name="resetInterpreter">false</boolProp>
+            <stringProp name="script">vars.put(&quot;certName&quot;,&quot;demis-99999&quot;);</stringProp>
+          </BeanShellPreProcessor>
+          <hashTree/>
+          <KeystoreConfig guiclass="TestBeanGUI" testclass="KeystoreConfig" testname="Keystore Configuration" enabled="true">
+            <stringProp name="clientCertAliasVarName">certName</stringProp>
+            <stringProp name="endIndex">-1</stringProp>
+            <stringProp name="preload">True</stringProp>
+            <stringProp name="startIndex">0</stringProp>
+          </KeystoreConfig>
+          <hashTree/>
+          <JSONPostProcessor guiclass="JSONPostProcessorGui" testclass="JSONPostProcessor" testname="JSON Extractor" enabled="true">
+            <stringProp name="JSONPostProcessor.referenceNames">ACCESSTOKEN</stringProp>
+            <stringProp name="JSONPostProcessor.jsonPathExprs">$.access_token</stringProp>
+            <stringProp name="JSONPostProcessor.match_numbers"></stringProp>
+            <stringProp name="Scope.variable"></stringProp>
+          </JSONPostProcessor>
+          <hashTree/>
+          <BeanShellPostProcessor guiclass="TestBeanGUI" testclass="BeanShellPostProcessor" testname="BeanShell PostProcessor" enabled="true">
+            <stringProp name="filename"></stringProp>
+            <stringProp name="parameters"></stringProp>
+            <boolProp name="resetInterpreter">false</boolProp>
+            <stringProp name="script">${__setProperty(AC_IGS, ${ACCESSTOKEN})};</stringProp>
+          </BeanShellPostProcessor>
+          <hashTree/>
+          <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+            <collectionProp name="HeaderManager.headers">
+              <elementProp name="" elementType="Header">
+                <stringProp name="Header.name">Accept</stringProp>
+                <stringProp name="Header.value">application/json</stringProp>
+              </elementProp>
+            </collectionProp>
+          </HeaderManager>
+          <hashTree/>
+          <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="set token as global property" enabled="true">
+            <stringProp name="scriptLanguage">groovy</stringProp>
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="cacheKey">true</stringProp>
+            <stringProp name="script">def token = vars.get(&quot;ACCESSTOKEN&quot;)
+//props statt vars sind global gültig und werden wenn sie verändert werdem zur laufzeit auch mit aktuelllen Werten herangezogen
+props.put(&quot;global_igs_token&quot;, token)</stringProp>
+            <stringProp name="TestPlan.comments">variablen die mit props gesetzt werdem können global dynamisch verwendet werden
+</stringProp>
+          </JSR223PostProcessor>
+          <hashTree/>
+        </hashTree>
+      </hashTree>
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="RKI TOKEN" enabled="true">
+        <intProp name="ThreadGroup.num_threads">1</intProp>
+        <intProp name="ThreadGroup.ramp_time">1</intProp>
+        <boolProp name="ThreadGroup.same_user_on_next_iteration">true</boolProp>
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller">
+          <stringProp name="LoopController.loops">1</stringProp>
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+        </elementProp>
+      </ThreadGroup>
+      <hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="get_token RKI" enabled="true">
+          <intProp name="HTTPSampler.concurrentPool">6</intProp>
+          <stringProp name="HTTPSampler.contentEncoding">utf-8</stringProp>
+          <stringProp name="HTTPSampler.path">/auth/realms/OEGD/protocol/openid-connect/token</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.postBodyRaw">false</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="grant_type" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">true</boolProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+                <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                <stringProp name="Argument.name">grant_type</stringProp>
+                <stringProp name="Argument.value">password</stringProp>
+              </elementProp>
+              <elementProp name="client_id" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">true</boolProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+                <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                <stringProp name="Argument.name">client_id</stringProp>
+                <stringProp name="Argument.value">demis-analyzer</stringProp>
+              </elementProp>
+              <elementProp name="username" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">true</boolProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+                <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                <stringProp name="Argument.name">username</stringProp>
+                <stringProp name="Argument.value">1.</stringProp>
+              </elementProp>
+              <elementProp name="client_secret" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">true</boolProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+                <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                <stringProp name="Argument.name">client_secret</stringProp>
+                <stringProp name="Argument.value">secret_client_secret</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <KeystoreConfig guiclass="TestBeanGUI" testclass="KeystoreConfig" testname="Keystore Configuration" enabled="true">
+            <stringProp name="clientCertAliasVarName">certName</stringProp>
+            <stringProp name="endIndex">-1</stringProp>
+            <stringProp name="preload">True</stringProp>
+            <stringProp name="startIndex">0</stringProp>
+          </KeystoreConfig>
+          <hashTree/>
+          <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="BeanShell PreProcessor" enabled="true">
+            <stringProp name="filename"></stringProp>
+            <stringProp name="parameters"></stringProp>
+            <boolProp name="resetInterpreter">false</boolProp>
+            <stringProp name="script">vars.put(&quot;certName&quot;,&quot;rki-1.&quot;);</stringProp>
+          </BeanShellPreProcessor>
+          <hashTree/>
+          <JSONPostProcessor guiclass="JSONPostProcessorGui" testclass="JSONPostProcessor" testname="JSON Extractor" enabled="true">
+            <stringProp name="JSONPostProcessor.referenceNames">ACCESSTOKEN</stringProp>
+            <stringProp name="JSONPostProcessor.jsonPathExprs">$.access_token</stringProp>
+            <stringProp name="JSONPostProcessor.match_numbers"></stringProp>
+            <stringProp name="Scope.variable"></stringProp>
+          </JSONPostProcessor>
+          <hashTree/>
+          <BeanShellPostProcessor guiclass="TestBeanGUI" testclass="BeanShellPostProcessor" testname="BeanShell PostProcessor" enabled="true">
+            <stringProp name="filename"></stringProp>
+            <stringProp name="parameters"></stringProp>
+            <boolProp name="resetInterpreter">false</boolProp>
+            <stringProp name="script">${__setProperty(AC_RKI, ${ACCESSTOKEN})};</stringProp>
+          </BeanShellPostProcessor>
+          <hashTree/>
+        </hashTree>
+      </hashTree>
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="GA TOKEN" enabled="true">
+        <intProp name="ThreadGroup.num_threads">1</intProp>
+        <intProp name="ThreadGroup.ramp_time">1</intProp>
+        <boolProp name="ThreadGroup.same_user_on_next_iteration">true</boolProp>
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller">
+          <stringProp name="LoopController.loops">1</stringProp>
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+        </elementProp>
+      </ThreadGroup>
+      <hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="get_token GA" enabled="true">
+          <intProp name="HTTPSampler.concurrentPool">6</intProp>
+          <stringProp name="HTTPSampler.contentEncoding">utf-8</stringProp>
+          <stringProp name="HTTPSampler.path">/auth/realms/OEGD/protocol/openid-connect/token</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.postBodyRaw">false</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="grant_type" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">true</boolProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+                <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                <stringProp name="Argument.name">grant_type</stringProp>
+                <stringProp name="Argument.value">password</stringProp>
+              </elementProp>
+              <elementProp name="client_id" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">true</boolProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+                <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                <stringProp name="Argument.name">client_id</stringProp>
+                <stringProp name="Argument.value">demis-importer</stringProp>
+              </elementProp>
+              <elementProp name="username" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">true</boolProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+                <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                <stringProp name="Argument.name">username</stringProp>
+                <stringProp name="Argument.value">1.01.0.53.</stringProp>
+              </elementProp>
+              <elementProp name="client_secret" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">true</boolProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+                <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                <stringProp name="Argument.name">client_secret</stringProp>
+                <stringProp name="Argument.value">secret_client_secret</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <KeystoreConfig guiclass="TestBeanGUI" testclass="KeystoreConfig" testname="Keystore Configuration" enabled="true">
+            <stringProp name="clientCertAliasVarName">certName</stringProp>
+            <stringProp name="endIndex">-1</stringProp>
+            <stringProp name="preload">True</stringProp>
+            <stringProp name="startIndex">0</stringProp>
+          </KeystoreConfig>
+          <hashTree/>
+          <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="BeanShell PreProcessor" enabled="true">
+            <stringProp name="filename"></stringProp>
+            <stringProp name="parameters"></stringProp>
+            <boolProp name="resetInterpreter">false</boolProp>
+            <stringProp name="script">vars.put(&quot;certName&quot;,&quot;ga-1.01.0.53.&quot;);</stringProp>
+          </BeanShellPreProcessor>
+          <hashTree/>
+          <JSONPostProcessor guiclass="JSONPostProcessorGui" testclass="JSONPostProcessor" testname="JSON Extractor" enabled="true">
+            <stringProp name="JSONPostProcessor.referenceNames">ACCESSTOKEN</stringProp>
+            <stringProp name="JSONPostProcessor.jsonPathExprs">$.access_token</stringProp>
+            <stringProp name="JSONPostProcessor.match_numbers"></stringProp>
+            <stringProp name="Scope.variable"></stringProp>
+          </JSONPostProcessor>
+          <hashTree/>
+          <BeanShellPostProcessor guiclass="TestBeanGUI" testclass="BeanShellPostProcessor" testname="BeanShell PostProcessor" enabled="true">
+            <stringProp name="filename"></stringProp>
+            <stringProp name="parameters"></stringProp>
+            <boolProp name="resetInterpreter">false</boolProp>
+            <stringProp name="script">${__setProperty(AC_GA1, ${ACCESSTOKEN})};</stringProp>
+          </BeanShellPostProcessor>
+          <hashTree/>
+        </hashTree>
+      </hashTree>
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="RUN" enabled="true">
+        <intProp name="ThreadGroup.num_threads">1</intProp>
+        <intProp name="ThreadGroup.ramp_time">1</intProp>
+        <boolProp name="ThreadGroup.same_user_on_next_iteration">true</boolProp>
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller">
+          <stringProp name="LoopController.loops">1</stringProp>
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+        </elementProp>
+      </ThreadGroup>
+      <hashTree>
+        <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="BeanShell PreProcessor" enabled="true">
+          <stringProp name="filename"></stringProp>
+          <stringProp name="parameters"></stringProp>
+          <boolProp name="resetInterpreter">false</boolProp>
+          <stringProp name="script">vars.put(&quot;certName&quot;,&quot;demis-test-int&quot;);</stringProp>
+        </BeanShellPreProcessor>
+        <hashTree/>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="labormeldung" enabled="true">
+          <intProp name="HTTPSampler.concurrentPool">6</intProp>
+          <stringProp name="HTTPSampler.contentEncoding">utf-8</stringProp>
+          <stringProp name="HTTPSampler.path">/notification-api/fhir/$process-notification</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">{&#xd;
+  &quot;resourceType&quot;: &quot;Parameters&quot;,&#xd;
+  &quot;parameter&quot;: [&#xd;
+    {&#xd;
+      &quot;name&quot;: &quot;content&quot;,&#xd;
+      &quot;resource&quot;: {&#xd;
+        &quot;resourceType&quot;: &quot;Bundle&quot;,&#xd;
+        &quot;meta&quot;: {&#xd;
+          &quot;lastUpdated&quot;: &quot;2021-03-04T20:16:01.000+01:00&quot;,&#xd;
+          &quot;profile&quot;: [&#xd;
+            &quot;https://demis.rki.de/fhir/StructureDefinition/NotificationBundleLaboratory&quot;&#xd;
+          ]&#xd;
+        },&#xd;
+        &quot;identifier&quot;: {&#xd;
+          &quot;system&quot;: &quot;https://demis.rki.de/fhir/NamingSystem/NotificationBundleId&quot;,&#xd;
+          &quot;value&quot;: &quot;01847e6b-a8cf-4d34-9a83-0fd6bee176b6&quot;&#xd;
+        },&#xd;
+        &quot;type&quot;: &quot;document&quot;,&#xd;
+        &quot;timestamp&quot;: &quot;2021-03-04T20:16:01.000+01:00&quot;,&#xd;
+        &quot;entry&quot;: [&#xd;
+          {&#xd;
+            &quot;fullUrl&quot;: &quot;https://demis.rki.de/fhir/Composition/19b97b1e-c34b-4705-ae5e-ede62ea921ed&quot;,&#xd;
+            &quot;resource&quot;: {&#xd;
+              &quot;resourceType&quot;: &quot;Composition&quot;,&#xd;
+              &quot;id&quot;: &quot;19b97b1e-c34b-4705-ae5e-ede62ea921ed&quot;,&#xd;
+              &quot;meta&quot;: {&#xd;
+                &quot;profile&quot;: [&#xd;
+                  &quot;https://demis.rki.de/fhir/StructureDefinition/NotificationLaboratory&quot;&#xd;
+                ]&#xd;
+              },&#xd;
+              &quot;identifier&quot;: {&#xd;
+                &quot;system&quot;: &quot;https://demis.rki.de/fhir/NamingSystem/NotificationId&quot;,&#xd;
+                &quot;value&quot;: &quot;ff85d6f6-4b77-4b31-93d0-870c89c57398&quot;&#xd;
+              },&#xd;
+              &quot;status&quot;: &quot;final&quot;,&#xd;
+              &quot;type&quot;: {&#xd;
+                &quot;coding&quot;: [&#xd;
+                  {&#xd;
+                    &quot;system&quot;: &quot;http://loinc.org&quot;,&#xd;
+                    &quot;code&quot;: &quot;34782-3&quot;,&#xd;
+                    &quot;display&quot;: &quot;Infectious disease Note&quot;&#xd;
+                  }&#xd;
+                ]&#xd;
+              },&#xd;
+              &quot;category&quot;: [&#xd;
+                {&#xd;
+                  &quot;coding&quot;: [&#xd;
+                    {&#xd;
+                      &quot;system&quot;: &quot;http://loinc.org&quot;,&#xd;
+                      &quot;code&quot;: &quot;11502-2&quot;,&#xd;
+                      &quot;display&quot;: &quot;Laboratory report&quot;&#xd;
+                    }&#xd;
+                  ]&#xd;
+                }&#xd;
+              ],&#xd;
+              &quot;subject&quot;: {&#xd;
+                &quot;reference&quot;: &quot;Patient/b25e729c-be50-4a4a-a19c-604993e86e93&quot;&#xd;
+              },&#xd;
+              &quot;date&quot;: &quot;2021-03-04T20:16:00.000+01:00&quot;,&#xd;
+              &quot;author&quot;: [&#xd;
+                {&#xd;
+                  &quot;reference&quot;: &quot;PractitionerRole/779413a2-612e-42f0-878a-8d8a774115c0&quot;&#xd;
+                }&#xd;
+              ],&#xd;
+              &quot;title&quot;: &quot;Erregernachweismeldung&quot;,&#xd;
+              &quot;section&quot;: [&#xd;
+                {&#xd;
+                  &quot;code&quot;: {&#xd;
+                    &quot;coding&quot;: [&#xd;
+                      {&#xd;
+                        &quot;system&quot;: &quot;http://loinc.org&quot;,&#xd;
+                        &quot;code&quot;: &quot;11502-2&quot;,&#xd;
+                        &quot;display&quot;: &quot;Laboratory report&quot;&#xd;
+                      }&#xd;
+                    ]&#xd;
+                  },&#xd;
+                  &quot;entry&quot;: [&#xd;
+                    {&#xd;
+                      &quot;reference&quot;: &quot;DiagnosticReport/48ed294c-ab15-4404-b2fb-99e775f6b9e9&quot;&#xd;
+                    }&#xd;
+                  ]&#xd;
+                }&#xd;
+              ]&#xd;
+            }&#xd;
+          },&#xd;
+          {&#xd;
+            &quot;fullUrl&quot;: &quot;https://demis.rki.de/fhir/Patient/b25e729c-be50-4a4a-a19c-604993e86e93&quot;,&#xd;
+            &quot;resource&quot;: {&#xd;
+              &quot;resourceType&quot;: &quot;Patient&quot;,&#xd;
+              &quot;id&quot;: &quot;b25e729c-be50-4a4a-a19c-604993e86e93&quot;,&#xd;
+              &quot;meta&quot;: {&#xd;
+                &quot;profile&quot;: [&#xd;
+                  &quot;https://demis.rki.de/fhir/StructureDefinition/NotifiedPerson&quot;&#xd;
+                ]&#xd;
+              },&#xd;
+              &quot;name&quot;: [&#xd;
+                {&#xd;
+                  &quot;use&quot;: &quot;official&quot;,&#xd;
+                  &quot;family&quot;: &quot;Tester&quot;,&#xd;
+                  &quot;given&quot;: [&#xd;
+                    &quot;Testus&quot;&#xd;
+                  ]&#xd;
+                }&#xd;
+              ],&#xd;
+              &quot;gender&quot;: &quot;male&quot;,&#xd;
+              &quot;birthDate&quot;: &quot;1978-12-12&quot;,&#xd;
+              &quot;address&quot;: [&#xd;
+                {&#xd;
+                  &quot;extension&quot;: [&#xd;
+                    {&#xd;
+                      &quot;url&quot;: &quot;https://demis.rki.de/fhir/StructureDefinition/AddressUse&quot;,&#xd;
+                      &quot;valueCoding&quot;: {&#xd;
+                        &quot;system&quot;: &quot;https://demis.rki.de/fhir/CodeSystem/addressUse&quot;,&#xd;
+                        &quot;code&quot;: &quot;primary&quot;&#xd;
+                      }&#xd;
+                    },&#xd;
+                    {&#xd;
+                      &quot;url&quot;: &quot;https://demis.rki.de/fhir/StructureDefinition/FacilityAddressNotifiedPerson&quot;,&#xd;
+                      &quot;valueReference&quot;: {&#xd;
+                        &quot;reference&quot;: &quot;Organization/a8266094-d9af-4885-aa64-9f10b31657d5&quot;&#xd;
+                      }&#xd;
+                    }&#xd;
+                  ],&#xd;
+                  &quot;line&quot;: [&#xd;
+                    &quot;Ganzwoandersstr. 1&quot;&#xd;
+                  ],&#xd;
+                  &quot;city&quot;: &quot;Berlin&quot;,&#xd;
+                  &quot;postalCode&quot;: &quot;21 481&quot;,&#xd;
+                  &quot;country&quot;: &quot;20422&quot;&#xd;
+                }&#xd;
+              ]&#xd;
+            }&#xd;
+          },&#xd;
+          {&#xd;
+            &quot;fullUrl&quot;: &quot;https://demis.rki.de/fhir/Organization/a8266094-d9af-4885-aa64-9f10b31657d5&quot;,&#xd;
+            &quot;resource&quot;: {&#xd;
+              &quot;resourceType&quot;: &quot;Organization&quot;,&#xd;
+              &quot;id&quot;: &quot;a8266094-d9af-4885-aa64-9f10b31657d5&quot;,&#xd;
+              &quot;meta&quot;: {&#xd;
+                &quot;profile&quot;: [&#xd;
+                  &quot;https://demis.rki.de/fhir/StructureDefinition/NotifiedPersonFacility&quot;&#xd;
+                ]&#xd;
+              },&#xd;
+              &quot;name&quot;: &quot;Erholungsklinik Wunderschön&quot;,&#xd;
+              &quot;telecom&quot;: [&#xd;
+                {&#xd;
+                  &quot;system&quot;: &quot;phone&quot;,&#xd;
+                  &quot;value&quot;: &quot;+49 30 999888777666555&quot;,&#xd;
+                  &quot;use&quot;: &quot;work&quot;&#xd;
+                },&#xd;
+                {&#xd;
+                  &quot;system&quot;: &quot;email&quot;,&#xd;
+                  &quot;value&quot;: &quot;info@klinik-wunderschoen.de&quot;,&#xd;
+                  &quot;use&quot;: &quot;work&quot;&#xd;
+                }&#xd;
+              ],&#xd;
+              &quot;address&quot;: [&#xd;
+                {&#xd;
+                  &quot;line&quot;: [&#xd;
+                    &quot;Erholungsstrasse 13&quot;&#xd;
+                  ],&#xd;
+                  &quot;city&quot;: &quot;Berlin&quot;,&#xd;
+                  &quot;postalCode&quot;: &quot;21481&quot;,&#xd;
+                  &quot;country&quot;: &quot;20422&quot;&#xd;
+                }&#xd;
+              ],&#xd;
+              &quot;contact&quot;: [&#xd;
+                {&#xd;
+                  &quot;name&quot;: {&#xd;
+                    &quot;use&quot;: &quot;official&quot;,&#xd;
+                    &quot;family&quot;: &quot;Heilsam&quot;,&#xd;
+                    &quot;given&quot;: [&#xd;
+                      &quot;Hubertus&quot;&#xd;
+                    ]&#xd;
+                  }&#xd;
+                }&#xd;
+              ]&#xd;
+            }&#xd;
+          },&#xd;
+          {&#xd;
+            &quot;fullUrl&quot;: &quot;https://demis.rki.de/fhir/PractitionerRole/779413a2-612e-42f0-878a-8d8a774115c0&quot;,&#xd;
+            &quot;resource&quot;: {&#xd;
+              &quot;resourceType&quot;: &quot;PractitionerRole&quot;,&#xd;
+              &quot;id&quot;: &quot;779413a2-612e-42f0-878a-8d8a774115c0&quot;,&#xd;
+              &quot;meta&quot;: {&#xd;
+                &quot;profile&quot;: [&#xd;
+                  &quot;https://demis.rki.de/fhir/StructureDefinition/NotifierRole&quot;&#xd;
+                ]&#xd;
+              },&#xd;
+              &quot;organization&quot;: {&#xd;
+                &quot;reference&quot;: &quot;Organization/1329db7b-c2cf-4b90-bce3-770f796deaae&quot;&#xd;
+              }&#xd;
+            }&#xd;
+          },&#xd;
+          {&#xd;
+            &quot;fullUrl&quot;: &quot;https://demis.rki.de/fhir/Organization/1329db7b-c2cf-4b90-bce3-770f796deaae&quot;,&#xd;
+            &quot;resource&quot;: {&#xd;
+              &quot;resourceType&quot;: &quot;Organization&quot;,&#xd;
+              &quot;id&quot;: &quot;1329db7b-c2cf-4b90-bce3-770f796deaae&quot;,&#xd;
+              &quot;meta&quot;: {&#xd;
+                &quot;profile&quot;: [&#xd;
+                  &quot;https://demis.rki.de/fhir/StructureDefinition/NotifierFacility&quot;&#xd;
+                ]&#xd;
+              },&#xd;
+              &quot;identifier&quot;: [&#xd;
+                {&#xd;
+                  &quot;system&quot;: &quot;https://demis.rki.de/fhir/NamingSystem/DemisLaboratoryId&quot;,&#xd;
+                  &quot;value&quot;: &quot;12345&quot;&#xd;
+                },&#xd;
+                {&#xd;
+                  &quot;system&quot;: &quot;https://fhir.kbv.de/NamingSystem/KBV_NS_Base_BSNR&quot;,&#xd;
+                  &quot;value&quot;: &quot;98765430&quot;&#xd;
+                }&#xd;
+              ],&#xd;
+              &quot;type&quot;: [&#xd;
+                {&#xd;
+                  &quot;coding&quot;: [&#xd;
+                    {&#xd;
+                      &quot;system&quot;: &quot;https://demis.rki.de/fhir/CodeSystem/organizationType&quot;,&#xd;
+                      &quot;code&quot;: &quot;laboratory&quot;,&#xd;
+                      &quot;display&quot;: &quot;Erregerdiagnostische Untersuchungsstelle&quot;&#xd;
+                    }&#xd;
+                  ]&#xd;
+                }&#xd;
+              ],&#xd;
+              &quot;name&quot;: &quot;Primärlabor&quot;,&#xd;
+              &quot;telecom&quot;: [&#xd;
+                {&#xd;
+                  &quot;system&quot;: &quot;phone&quot;,&#xd;
+                  &quot;value&quot;: &quot;0309876543210&quot;,&#xd;
+                  &quot;use&quot;: &quot;work&quot;&#xd;
+                },&#xd;
+                {&#xd;
+                  &quot;system&quot;: &quot;fax&quot;,&#xd;
+                  &quot;value&quot;: &quot;0309876543211&quot;,&#xd;
+                  &quot;use&quot;: &quot;work&quot;&#xd;
+                },&#xd;
+                {&#xd;
+                  &quot;system&quot;: &quot;email&quot;,&#xd;
+                  &quot;value&quot;: &quot;ifsg@primaerlabor-gibt-es-nicht.de&quot;,&#xd;
+                  &quot;use&quot;: &quot;work&quot;&#xd;
+                },&#xd;
+                {&#xd;
+                  &quot;system&quot;: &quot;url&quot;,&#xd;
+                  &quot;value&quot;: &quot;http://primaerlabor-gibt-es-nicht.de&quot;,&#xd;
+                  &quot;use&quot;: &quot;work&quot;&#xd;
+                }&#xd;
+              ],&#xd;
+              &quot;address&quot;: [&#xd;
+                {&#xd;
+                  &quot;line&quot;: [&#xd;
+                    &quot;Dingsweg 321&quot;&#xd;
+                  ],&#xd;
+                  &quot;city&quot;: &quot;Berlin&quot;,&#xd;
+                  &quot;postalCode&quot;: &quot;21481&quot;,&#xd;
+                  &quot;country&quot;: &quot;20422&quot;&#xd;
+                }&#xd;
+              ],&#xd;
+              &quot;contact&quot;: [&#xd;
+                {&#xd;
+                  &quot;name&quot;: {&#xd;
+                    &quot;use&quot;: &quot;official&quot;,&#xd;
+                    &quot;family&quot;: &quot;Kontakt&quot;,&#xd;
+                    &quot;given&quot;: [&#xd;
+                      &quot;Konrad&quot;&#xd;
+                    ]&#xd;
+                  }&#xd;
+                }&#xd;
+              ]&#xd;
+            }&#xd;
+          },&#xd;
+          {&#xd;
+            &quot;fullUrl&quot;: &quot;https://demis.rki.de/fhir/PractitionerRole/4387eded-e986-46bb-8f83-bc65f4b9cbdf&quot;,&#xd;
+            &quot;resource&quot;: {&#xd;
+              &quot;resourceType&quot;: &quot;PractitionerRole&quot;,&#xd;
+              &quot;id&quot;: &quot;4387eded-e986-46bb-8f83-bc65f4b9cbdf&quot;,&#xd;
+              &quot;meta&quot;: {&#xd;
+                &quot;profile&quot;: [&#xd;
+                  &quot;https://demis.rki.de/fhir/StructureDefinition/SubmittingRole&quot;&#xd;
+                ]&#xd;
+              },&#xd;
+              &quot;organization&quot;: {&#xd;
+                &quot;reference&quot;: &quot;Organization/84ce4340-8dbc-493b-8004-89db200b2807&quot;&#xd;
+              }&#xd;
+            }&#xd;
+          },&#xd;
+          {&#xd;
+            &quot;fullUrl&quot;: &quot;https://demis.rki.de/fhir/Organization/84ce4340-8dbc-493b-8004-89db200b2807&quot;,&#xd;
+            &quot;resource&quot;: {&#xd;
+              &quot;resourceType&quot;: &quot;Organization&quot;,&#xd;
+              &quot;id&quot;: &quot;84ce4340-8dbc-493b-8004-89db200b2807&quot;,&#xd;
+              &quot;meta&quot;: {&#xd;
+                &quot;profile&quot;: [&#xd;
+                  &quot;https://demis.rki.de/fhir/StructureDefinition/SubmittingFacility&quot;&#xd;
+                ]&#xd;
+              },&#xd;
+              &quot;identifier&quot;: [&#xd;
+                {&#xd;
+                  &quot;system&quot;: &quot;https://fhir.kbv.de/NamingSystem/KBV_NS_Base_BSNR&quot;,&#xd;
+                  &quot;value&quot;: &quot;123456780&quot;&#xd;
+                }&#xd;
+              ],&#xd;
+              &quot;name&quot;: &quot;Einsendepraxis ABC&quot;,&#xd;
+              &quot;telecom&quot;: [&#xd;
+                {&#xd;
+                  &quot;system&quot;: &quot;phone&quot;,&#xd;
+                  &quot;value&quot;: &quot;030 1234567890&quot;,&#xd;
+                  &quot;use&quot;: &quot;work&quot;&#xd;
+                },&#xd;
+                {&#xd;
+                  &quot;system&quot;: &quot;email&quot;,&#xd;
+                  &quot;value&quot;: &quot;info@einsendepraxis-abc.de&quot;,&#xd;
+                  &quot;use&quot;: &quot;work&quot;&#xd;
+                }&#xd;
+              ],&#xd;
+              &quot;address&quot;: [&#xd;
+                {&#xd;
+                  &quot;line&quot;: [&#xd;
+                    &quot;Teststr. 123&quot;&#xd;
+                  ],&#xd;
+                  &quot;city&quot;: &quot;Berlin&quot;,&#xd;
+                  &quot;postalCode&quot;: &quot;21481&quot;,&#xd;
+                  &quot;country&quot;: &quot;20422&quot;&#xd;
+                }&#xd;
+              ]&#xd;
+            }&#xd;
+          },&#xd;
+          {&#xd;
+            &quot;fullUrl&quot;: &quot;https://demis.rki.de/fhir/DiagnosticReport/48ed294c-ab15-4404-b2fb-99e775f6b9e9&quot;,&#xd;
+            &quot;resource&quot;: {&#xd;
+              &quot;resourceType&quot;: &quot;DiagnosticReport&quot;,&#xd;
+              &quot;id&quot;: &quot;48ed294c-ab15-4404-b2fb-99e775f6b9e9&quot;,&#xd;
+              &quot;meta&quot;: {&#xd;
+                &quot;profile&quot;: [&#xd;
+                  &quot;https://demis.rki.de/fhir/StructureDefinition/LaboratoryReportCVDP&quot;&#xd;
+                ]&#xd;
+              },&#xd;
+              &quot;basedOn&quot;: [&#xd;
+                {&#xd;
+                  &quot;type&quot;: &quot;ServiceRequest&quot;,&#xd;
+                  &quot;identifier&quot;: {&#xd;
+                    &quot;system&quot;: &quot;https://demis.rki.de/fhir/NamingSystem/ServiceRequestId&quot;,&#xd;
+                    &quot;value&quot;: &quot;2021-000672943&quot;&#xd;
+                  }&#xd;
+                }&#xd;
+              ],&#xd;
+              &quot;status&quot;: &quot;final&quot;,&#xd;
+              &quot;code&quot;: {&#xd;
+                &quot;coding&quot;: [&#xd;
+                  {&#xd;
+                    &quot;system&quot;: &quot;https://demis.rki.de/fhir/CodeSystem/notificationCategory&quot;,&#xd;
+                    &quot;code&quot;: &quot;cvdp&quot;,&#xd;
+                    &quot;display&quot;: &quot;Severe-Acute-Respiratory-Syndrome-Coronavirus-2 (SARS-CoV-2)&quot;&#xd;
+                  }&#xd;
+                ]&#xd;
+              },&#xd;
+              &quot;subject&quot;: {&#xd;
+                &quot;reference&quot;: &quot;Patient/b25e729c-be50-4a4a-a19c-604993e86e93&quot;&#xd;
+              },&#xd;
+              &quot;issued&quot;: &quot;2021-03-04T20:15:00.000+01:00&quot;,&#xd;
+              &quot;result&quot;: [&#xd;
+                {&#xd;
+                  &quot;reference&quot;: &quot;Observation/6ffe6ecc-6f9e-4365-ae2e-54bbb453d992&quot;&#xd;
+                }&#xd;
+              ],&#xd;
+              &quot;conclusion&quot;: &quot;Ich bin die textuelle Conclusion ...&quot;,&#xd;
+              &quot;conclusionCode&quot;: [&#xd;
+                {&#xd;
+                  &quot;coding&quot;: [&#xd;
+                    {&#xd;
+                      &quot;system&quot;: &quot;https://demis.rki.de/fhir/CodeSystem/conclusionCode&quot;,&#xd;
+                      &quot;code&quot;: &quot;pathogenDetected&quot;,&#xd;
+                      &quot;display&quot;: &quot;Meldepflichtiger Erreger nachgewiesen&quot;&#xd;
+                    }&#xd;
+                  ]&#xd;
+                }&#xd;
+              ]&#xd;
+            }&#xd;
+          },&#xd;
+          {&#xd;
+            &quot;fullUrl&quot;: &quot;https://demis.rki.de/fhir/Observation/6ffe6ecc-6f9e-4365-ae2e-54bbb453d992&quot;,&#xd;
+            &quot;resource&quot;: {&#xd;
+              &quot;resourceType&quot;: &quot;Observation&quot;,&#xd;
+              &quot;id&quot;: &quot;6ffe6ecc-6f9e-4365-ae2e-54bbb453d992&quot;,&#xd;
+              &quot;meta&quot;: {&#xd;
+                &quot;profile&quot;: [&#xd;
+                  &quot;https://demis.rki.de/fhir/StructureDefinition/PathogenDetectionCVDP&quot;&#xd;
+                ]&#xd;
+              },&#xd;
+              &quot;status&quot;: &quot;final&quot;,&#xd;
+              &quot;category&quot;: [&#xd;
+                {&#xd;
+                  &quot;coding&quot;: [&#xd;
+                    {&#xd;
+                      &quot;system&quot;: &quot;http://terminology.hl7.org/CodeSystem/observation-category&quot;,&#xd;
+                      &quot;code&quot;: &quot;laboratory&quot;&#xd;
+                    }&#xd;
+                  ]&#xd;
+                }&#xd;
+              ],&#xd;
+              &quot;code&quot;: {&#xd;
+                &quot;coding&quot;: [&#xd;
+                  {&#xd;
+                    &quot;system&quot;: &quot;http://loinc.org&quot;,&#xd;
+                    &quot;code&quot;: &quot;94759-8&quot;,&#xd;
+                    &quot;display&quot;: &quot;SARS-CoV-2 (COVID-19) RNA [Presence] in Nasopharynx by NAA with probe detection&quot;&#xd;
+                  }&#xd;
+                ]&#xd;
+              },&#xd;
+              &quot;subject&quot;: {&#xd;
+                &quot;reference&quot;: &quot;Patient/b25e729c-be50-4a4a-a19c-604993e86e93&quot;&#xd;
+              },&#xd;
+              &quot;valueString&quot;: &quot;nachgewiesen&quot;,&#xd;
+              &quot;interpretation&quot;: [&#xd;
+                {&#xd;
+                  &quot;coding&quot;: [&#xd;
+                    {&#xd;
+                      &quot;system&quot;: &quot;http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation&quot;,&#xd;
+                      &quot;code&quot;: &quot;POS&quot;,&#xd;
+                      &quot;display&quot;: &quot;Positive&quot;&#xd;
+                    }&#xd;
+                  ]&#xd;
+                }&#xd;
+              ],&#xd;
+              &quot;note&quot;: [&#xd;
+                {&#xd;
+                  &quot;text&quot;: &quot;Nette Zusatzinformation …&quot;&#xd;
+                }&#xd;
+              ],&#xd;
+              &quot;method&quot;: {&#xd;
+                &quot;coding&quot;: [&#xd;
+                  {&#xd;
+                    &quot;system&quot;: &quot;http://snomed.info/sct&quot;,&#xd;
+                    &quot;code&quot;: &quot;398545005&quot;,&#xd;
+                    &quot;display&quot;: &quot;Nucleic acid assay (procedure)&quot;&#xd;
+                  }&#xd;
+                ]&#xd;
+              },&#xd;
+              &quot;specimen&quot;: {&#xd;
+                &quot;reference&quot;: &quot;Specimen/b4a68af4-bde3-49d6-9aa3-42f5e3c53aa0&quot;&#xd;
+              }&#xd;
+            }&#xd;
+          },&#xd;
+          {&#xd;
+            &quot;fullUrl&quot;: &quot;https://demis.rki.de/fhir/Specimen/b4a68af4-bde3-49d6-9aa3-42f5e3c53aa0&quot;,&#xd;
+            &quot;resource&quot;: {&#xd;
+              &quot;resourceType&quot;: &quot;Specimen&quot;,&#xd;
+              &quot;id&quot;: &quot;b4a68af4-bde3-49d6-9aa3-42f5e3c53aa0&quot;,&#xd;
+              &quot;meta&quot;: {&#xd;
+                &quot;profile&quot;: [&#xd;
+                  &quot;https://demis.rki.de/fhir/StructureDefinition/SpecimenCVDP&quot;&#xd;
+                ]&#xd;
+              },&#xd;
+              &quot;status&quot;: &quot;available&quot;,&#xd;
+              &quot;type&quot;: {&#xd;
+                &quot;coding&quot;: [&#xd;
+                  {&#xd;
+                    &quot;system&quot;: &quot;http://snomed.info/sct&quot;,&#xd;
+                    &quot;code&quot;: &quot;258500001&quot;,&#xd;
+                    &quot;display&quot;: &quot;Nasopharyngeal swab (specimen)&quot;&#xd;
+                  }&#xd;
+                ]&#xd;
+              },&#xd;
+              &quot;subject&quot;: {&#xd;
+                &quot;reference&quot;: &quot;Patient/b25e729c-be50-4a4a-a19c-604993e86e93&quot;&#xd;
+              },&#xd;
+              &quot;receivedTime&quot;: &quot;2021-03-04T15:40:00.000+01:00&quot;,&#xd;
+              &quot;collection&quot;: {&#xd;
+                &quot;collector&quot;: {&#xd;
+                  &quot;reference&quot;: &quot;PractitionerRole/4387eded-e986-46bb-8f83-bc65f4b9cbdf&quot;&#xd;
+                },&#xd;
+                &quot;collectedDateTime&quot;: &quot;2021-03-04T09:50:00.000+01:00&quot;&#xd;
+              },&#xd;
+              &quot;note&quot;: [&#xd;
+                {&#xd;
+                  &quot;text&quot;: &quot;Ich bin eine interessante Zusatzinformation ...&quot;&#xd;
+                }&#xd;
+              ]&#xd;
+            }&#xd;
+          }&#xd;
+        ]&#xd;
+      }&#xd;
+    }&#xd;
+  ]&#xd;
+}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+            <collectionProp name="HeaderManager.headers">
+              <elementProp name="" elementType="Header">
+                <stringProp name="Header.name">Content-Type</stringProp>
+                <stringProp name="Header.value">application/json</stringProp>
+              </elementProp>
+              <elementProp name="" elementType="Header">
+                <stringProp name="Header.name">Authorization</stringProp>
+                <stringProp name="Header.value">Bearer ${__property(AC_LAB)}</stringProp>
+              </elementProp>
+              <elementProp name="" elementType="Header">
+                <stringProp name="Header.name">Accept</stringProp>
+                <stringProp name="Header.value">application/json</stringProp>
+              </elementProp>
+            </collectionProp>
+          </HeaderManager>
+          <hashTree/>
+          <JSONPostProcessor guiclass="JSONPostProcessorGui" testclass="JSONPostProcessor" testname="JSON Extractor" enabled="true">
+            <stringProp name="JSONPostProcessor.referenceNames">BUNDLE_ID</stringProp>
+            <stringProp name="JSONPostProcessor.jsonPathExprs">$.parameter[0].resource.entry[0].resource.extension[0].valueIdentifier.value</stringProp>
+            <stringProp name="JSONPostProcessor.match_numbers"></stringProp>
+          </JSONPostProcessor>
+          <hashTree/>
+          <JSONPostProcessor guiclass="JSONPostProcessorGui" testclass="JSONPostProcessor" testname="JSON Extractor Date" enabled="true">
+            <stringProp name="JSONPostProcessor.referenceNames">LASTUPDATED</stringProp>
+            <stringProp name="JSONPostProcessor.jsonPathExprs">$.parameter[0].resource.entry[0].resource.date</stringProp>
+            <stringProp name="JSONPostProcessor.match_numbers"></stringProp>
+          </JSONPostProcessor>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="hospitalmeldung" enabled="true">
+          <intProp name="HTTPSampler.concurrentPool">6</intProp>
+          <stringProp name="HTTPSampler.contentEncoding">utf-8</stringProp>
+          <stringProp name="HTTPSampler.path">/notification-api/fhir/$process-notification</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">{&#xd;
+  &quot;resourceType&quot;: &quot;Parameters&quot;,&#xd;
+  &quot;parameter&quot;: [&#xd;
+    {&#xd;
+      &quot;name&quot;: &quot;content&quot;,&#xd;
+      &quot;resource&quot;: {&#xd;
+        &quot;resourceType&quot;: &quot;Bundle&quot;,&#xd;
+        &quot;meta&quot;: {&#xd;
+          &quot;lastUpdated&quot;: &quot;2021-03-04T12:00:00.000+01:00&quot;,&#xd;
+          &quot;profile&quot;: [&#xd;
+            &quot;https://demis.rki.de/fhir/StructureDefinition/NotificationBundleDisease&quot;&#xd;
+          ]&#xd;
+        },&#xd;
+        &quot;identifier&quot;: {&#xd;
+          &quot;system&quot;: &quot;https://demis.rki.de/fhir/NamingSystem/NotificationBundleId&quot;,&#xd;
+          &quot;value&quot;: &quot;f6f4061a-1bdd-31c0-8d81-09b39f581270&quot;&#xd;
+        },&#xd;
+        &quot;type&quot;: &quot;document&quot;,&#xd;
+        &quot;timestamp&quot;: &quot;2021-03-04T12:00:00.000+01:00&quot;,&#xd;
+        &quot;entry&quot;: [&#xd;
+          {&#xd;
+            &quot;fullUrl&quot;: &quot;https://demis.rki.de/fhir/Composition/9f0a1336-3ac2-3a31-bfff-b8233c214452&quot;,&#xd;
+            &quot;resource&quot;: {&#xd;
+              &quot;resourceType&quot;: &quot;Composition&quot;,&#xd;
+              &quot;id&quot;: &quot;9f0a1336-3ac2-3a31-bfff-b8233c214452&quot;,&#xd;
+              &quot;meta&quot;: {&#xd;
+                &quot;lastUpdated&quot;: &quot;2021-03-04T12:00:00.000+01:00&quot;,&#xd;
+                &quot;profile&quot;: [&#xd;
+                  &quot;https://demis.rki.de/fhir/StructureDefinition/NotificationDiseaseCVDD&quot;&#xd;
+                ]&#xd;
+              },&#xd;
+              &quot;identifier&quot;: {&#xd;
+                &quot;system&quot;: &quot;https://demis.rki.de/fhir/NamingSystem/NotificationId&quot;,&#xd;
+                &quot;value&quot;: &quot;b84d3abf-a524-4a24-a019-48b2b96bf1de&quot;&#xd;
+              },&#xd;
+              &quot;status&quot;: &quot;final&quot;,&#xd;
+              &quot;type&quot;: {&#xd;
+                &quot;coding&quot;: [&#xd;
+                  {&#xd;
+                    &quot;system&quot;: &quot;http://loinc.org&quot;,&#xd;
+                    &quot;code&quot;: &quot;34782-3&quot;,&#xd;
+                    &quot;display&quot;: &quot;Infectious disease Note&quot;&#xd;
+                  }&#xd;
+                ]&#xd;
+              },&#xd;
+              &quot;category&quot;: [&#xd;
+                {&#xd;
+                  &quot;coding&quot;: [&#xd;
+                    {&#xd;
+                      &quot;system&quot;: &quot;https://demis.rki.de/fhir/CodeSystem/notificationType&quot;,&#xd;
+                      &quot;code&quot;: &quot;6.1_2&quot;,&#xd;
+                      &quot;display&quot;: &quot;Meldung gemäß §6 Absatz 1, 2&quot;&#xd;
+                    }&#xd;
+                  ]&#xd;
+                }&#xd;
+              ],&#xd;
+              &quot;subject&quot;: {&#xd;
+                &quot;reference&quot;: &quot;Patient/ac163863-fefa-3ce2-8511-7a4150d6ad43&quot;&#xd;
+              },&#xd;
+              &quot;date&quot;: &quot;2021-03-04T01:00:00+01:00&quot;,&#xd;
+              &quot;author&quot;: [&#xd;
+                {&#xd;
+                  &quot;reference&quot;: &quot;PractitionerRole/6373194f-4d06-382a-a67d-e3c7da243c30&quot;&#xd;
+                }&#xd;
+              ],&#xd;
+              &quot;title&quot;: &quot;Meldung gemäß §6 Absatz 1, 2 IfSG&quot;,&#xd;
+              &quot;section&quot;: [&#xd;
+                {&#xd;
+                  &quot;title&quot;: &quot;Diagnose&quot;,&#xd;
+                  &quot;code&quot;: {&#xd;
+                    &quot;coding&quot;: [&#xd;
+                      {&#xd;
+                        &quot;system&quot;: &quot;https://demis.rki.de/fhir/CodeSystem/sectionCode&quot;,&#xd;
+                        &quot;code&quot;: &quot;diagnosis&quot;,&#xd;
+                        &quot;display&quot;: &quot;Diagnose&quot;&#xd;
+                      }&#xd;
+                    ]&#xd;
+                  },&#xd;
+                  &quot;entry&quot;: [&#xd;
+                    {&#xd;
+                      &quot;reference&quot;: &quot;Condition/cc86fc62-11af-3411-8b5e-6b2202206ec4&quot;&#xd;
+                    }&#xd;
+                  ]&#xd;
+                },&#xd;
+                {&#xd;
+                  &quot;title&quot;: &quot;Meldetatbestandsübergreifende klinische und epidemiologische Angaben&quot;,&#xd;
+                  &quot;code&quot;: {&#xd;
+                    &quot;coding&quot;: [&#xd;
+                      {&#xd;
+                        &quot;system&quot;: &quot;https://demis.rki.de/fhir/CodeSystem/sectionCode&quot;,&#xd;
+                        &quot;code&quot;: &quot;generalClinAndEpiInformation&quot;,&#xd;
+                        &quot;display&quot;: &quot;Meldetatbestandsübergreifende klinische und epidemiologische Angaben&quot;&#xd;
+                      }&#xd;
+                    ]&#xd;
+                  },&#xd;
+                  &quot;entry&quot;: [&#xd;
+                    {&#xd;
+                      &quot;reference&quot;: &quot;QuestionnaireResponse/2f0c6b36-6421-35a8-8ea1-0e013db39410&quot;&#xd;
+                    }&#xd;
+                  ]&#xd;
+                },&#xd;
+                {&#xd;
+                  &quot;title&quot;: &quot;Meldetatbestandsspezifische klinische und epidemiologische Angaben&quot;,&#xd;
+                  &quot;code&quot;: {&#xd;
+                    &quot;coding&quot;: [&#xd;
+                      {&#xd;
+                        &quot;system&quot;: &quot;https://demis.rki.de/fhir/CodeSystem/sectionCode&quot;,&#xd;
+                        &quot;code&quot;: &quot;specificClinAndEpiInformation&quot;,&#xd;
+                        &quot;display&quot;: &quot;Meldetatbestandsspezifische klinische und epidemiologische Angaben&quot;&#xd;
+                      }&#xd;
+                    ]&#xd;
+                  },&#xd;
+                  &quot;entry&quot;: [&#xd;
+                    {&#xd;
+                      &quot;reference&quot;: &quot;QuestionnaireResponse/146e5ced-db63-36e0-b8d3-85fa94218d8b&quot;&#xd;
+                    }&#xd;
+                  ]&#xd;
+                }&#xd;
+              ]&#xd;
+            }&#xd;
+          },&#xd;
+          {&#xd;
+            &quot;fullUrl&quot;: &quot;https://demis.rki.de/fhir/Patient/ac163863-fefa-3ce2-8511-7a4150d6ad43&quot;,&#xd;
+            &quot;resource&quot;: {&#xd;
+              &quot;resourceType&quot;: &quot;Patient&quot;,&#xd;
+              &quot;id&quot;: &quot;ac163863-fefa-3ce2-8511-7a4150d6ad43&quot;,&#xd;
+              &quot;meta&quot;: {&#xd;
+                &quot;profile&quot;: [&#xd;
+                  &quot;https://demis.rki.de/fhir/StructureDefinition/NotifiedPerson&quot;&#xd;
+                ]&#xd;
+              },&#xd;
+              &quot;name&quot;: [&#xd;
+                {&#xd;
+                  &quot;use&quot;: &quot;official&quot;,&#xd;
+                  &quot;family&quot;: &quot;Fontane&quot;,&#xd;
+                  &quot;given&quot;: [&#xd;
+                    &quot;Theodor&quot;&#xd;
+                  ]&#xd;
+                }&#xd;
+              ],&#xd;
+              &quot;gender&quot;: &quot;male&quot;,&#xd;
+              &quot;birthDate&quot;: &quot;1991-12-30&quot;,&#xd;
+              &quot;address&quot;: [&#xd;
+                {&#xd;
+                  &quot;extension&quot;: [&#xd;
+                    {&#xd;
+                      &quot;url&quot;: &quot;https://demis.rki.de/fhir/StructureDefinition/AddressUse&quot;,&#xd;
+                      &quot;valueCoding&quot;: {&#xd;
+                        &quot;system&quot;: &quot;https://demis.rki.de/fhir/CodeSystem/addressUse&quot;,&#xd;
+                        &quot;code&quot;: &quot;primary&quot;&#xd;
+                      }&#xd;
+                    }&#xd;
+                  ],&#xd;
+                  &quot;line&quot;: [&#xd;
+                    &quot;Heerstr. 1&quot;&#xd;
+                  ],&#xd;
+                  &quot;city&quot;: &quot;Buchloe&quot;,&#xd;
+                  &quot;postalCode&quot;: &quot;21481&quot;,&#xd;
+                  &quot;country&quot;: &quot;20422&quot;&#xd;
+                }&#xd;
+              ]&#xd;
+            }&#xd;
+          },&#xd;
+          {&#xd;
+            &quot;fullUrl&quot;: &quot;https://demis.rki.de/fhir/Condition/cc86fc62-11af-3411-8b5e-6b2202206ec4&quot;,&#xd;
+            &quot;resource&quot;: {&#xd;
+              &quot;resourceType&quot;: &quot;Condition&quot;,&#xd;
+              &quot;id&quot;: &quot;cc86fc62-11af-3411-8b5e-6b2202206ec4&quot;,&#xd;
+              &quot;meta&quot;: {&#xd;
+                &quot;profile&quot;: [&#xd;
+                  &quot;https://demis.rki.de/fhir/StructureDefinition/DiseaseCVDD&quot;&#xd;
+                ]&#xd;
+              },&#xd;
+              &quot;verificationStatus&quot;: {&#xd;
+                &quot;coding&quot;: [&#xd;
+                  {&#xd;
+                    &quot;system&quot;: &quot;http://terminology.hl7.org/CodeSystem/condition-ver-status&quot;,&#xd;
+                    &quot;code&quot;: &quot;confirmed&quot;&#xd;
+                  }&#xd;
+                ]&#xd;
+              },&#xd;
+              &quot;code&quot;: {&#xd;
+                &quot;coding&quot;: [&#xd;
+                  {&#xd;
+                    &quot;system&quot;: &quot;https://demis.rki.de/fhir/CodeSystem/notificationDiseaseCategory&quot;,&#xd;
+                    &quot;code&quot;: &quot;cvdd&quot;,&#xd;
+                    &quot;display&quot;: &quot;Coronavirus-Krankheit-2019 (COVID-19)&quot;&#xd;
+                  }&#xd;
+                ]&#xd;
+              },&#xd;
+              &quot;subject&quot;: {&#xd;
+                &quot;reference&quot;: &quot;Patient/ac163863-fefa-3ce2-8511-7a4150d6ad43&quot;&#xd;
+              },&#xd;
+              &quot;recordedDate&quot;: &quot;2021-03-04&quot;&#xd;
+            }&#xd;
+          },&#xd;
+          {&#xd;
+            &quot;fullUrl&quot;: &quot;https://demis.rki.de/fhir/Organization/7b1cb8d3-f4bb-3cf6-8c0e-01e6657a13ea&quot;,&#xd;
+            &quot;resource&quot;: {&#xd;
+              &quot;resourceType&quot;: &quot;Organization&quot;,&#xd;
+              &quot;id&quot;: &quot;7b1cb8d3-f4bb-3cf6-8c0e-01e6657a13ea&quot;,&#xd;
+              &quot;meta&quot;: {&#xd;
+                &quot;profile&quot;: [&#xd;
+                  &quot;https://demis.rki.de/fhir/StructureDefinition/NotifierFacility&quot;&#xd;
+                ]&#xd;
+              },&#xd;
+              &quot;identifier&quot;: [&#xd;
+                {&#xd;
+                  &quot;system&quot;: &quot;https://fhir.kbv.de/NamingSystem/KBV_NS_Base_BSNR&quot;,&#xd;
+                  &quot;value&quot;: &quot;987654300&quot;&#xd;
+                }&#xd;
+              ],&#xd;
+              &quot;type&quot;: [&#xd;
+                {&#xd;
+                  &quot;coding&quot;: [&#xd;
+                    {&#xd;
+                      &quot;system&quot;: &quot;https://demis.rki.de/fhir/CodeSystem/organizationType&quot;,&#xd;
+                      &quot;code&quot;: &quot;hospital&quot;&#xd;
+                    }&#xd;
+                  ]&#xd;
+                }&#xd;
+              ],&#xd;
+              &quot;name&quot;: &quot;Sankt Gertrauden Krankenhaus&quot;,&#xd;
+              &quot;telecom&quot;: [&#xd;
+                {&#xd;
+                  &quot;system&quot;: &quot;phone&quot;,&#xd;
+                  &quot;value&quot;: &quot;309876543210&quot;,&#xd;
+                  &quot;use&quot;: &quot;work&quot;&#xd;
+                }&#xd;
+              ],&#xd;
+              &quot;address&quot;: [&#xd;
+                {&#xd;
+                  &quot;line&quot;: [&#xd;
+                    &quot;Dingsweg 321&quot;&#xd;
+                  ],&#xd;
+                  &quot;city&quot;: &quot;Buchloe&quot;,&#xd;
+                  &quot;postalCode&quot;: &quot;21481&quot;,&#xd;
+                  &quot;country&quot;: &quot;20422&quot;&#xd;
+                }&#xd;
+              ]&#xd;
+            }&#xd;
+          },&#xd;
+          {&#xd;
+            &quot;fullUrl&quot;: &quot;https://demis.rki.de/fhir/PractitionerRole/6373194f-4d06-382a-a67d-e3c7da243c30&quot;,&#xd;
+            &quot;resource&quot;: {&#xd;
+              &quot;resourceType&quot;: &quot;PractitionerRole&quot;,&#xd;
+              &quot;id&quot;: &quot;6373194f-4d06-382a-a67d-e3c7da243c30&quot;,&#xd;
+              &quot;meta&quot;: {&#xd;
+                &quot;profile&quot;: [&#xd;
+                  &quot;https://demis.rki.de/fhir/StructureDefinition/NotifierRole&quot;&#xd;
+                ]&#xd;
+              },&#xd;
+              &quot;organization&quot;: {&#xd;
+                &quot;reference&quot;: &quot;Organization/7b1cb8d3-f4bb-3cf6-8c0e-01e6657a13ea&quot;&#xd;
+              }&#xd;
+            }&#xd;
+          },&#xd;
+          {&#xd;
+            &quot;fullUrl&quot;: &quot;https://demis.rki.de/fhir/Encounter/cf424cfb-8809-3b51-8ab2-d8bf979cbe8d&quot;,&#xd;
+            &quot;resource&quot;: {&#xd;
+              &quot;resourceType&quot;: &quot;Encounter&quot;,&#xd;
+              &quot;id&quot;: &quot;cf424cfb-8809-3b51-8ab2-d8bf979cbe8d&quot;,&#xd;
+              &quot;meta&quot;: {&#xd;
+                &quot;profile&quot;: [&#xd;
+                  &quot;https://demis.rki.de/fhir/StructureDefinition/Hospitalization&quot;&#xd;
+                ]&#xd;
+              },&#xd;
+              &quot;status&quot;: &quot;in-progress&quot;,&#xd;
+              &quot;class&quot;: {&#xd;
+                &quot;system&quot;: &quot;http://terminology.hl7.org/CodeSystem/v3-ActCode&quot;,&#xd;
+                &quot;code&quot;: &quot;IMP&quot;,&#xd;
+                &quot;display&quot;: &quot;inpatient encounter&quot;&#xd;
+              },&#xd;
+              &quot;serviceType&quot;: {&#xd;
+                &quot;coding&quot;: [&#xd;
+                  {&#xd;
+                    &quot;system&quot;: &quot;https://demis.rki.de/fhir/CodeSystem/hospitalizationServiceType&quot;,&#xd;
+                    &quot;code&quot;: &quot;0800&quot;,&#xd;
+                    &quot;display&quot;: &quot;Pneumologie&quot;&#xd;
+                  }&#xd;
+                ]&#xd;
+              },&#xd;
+              &quot;subject&quot;: {&#xd;
+                &quot;reference&quot;: &quot;Patient/ac163863-fefa-3ce2-8511-7a4150d6ad43&quot;&#xd;
+              },&#xd;
+              &quot;period&quot;: {&#xd;
+                &quot;start&quot;: &quot;2021-03-04&quot;&#xd;
+              },&#xd;
+              &quot;serviceProvider&quot;: {&#xd;
+                &quot;reference&quot;: &quot;Organization/7b1cb8d3-f4bb-3cf6-8c0e-01e6657a13ea&quot;&#xd;
+              }&#xd;
+            }&#xd;
+          },&#xd;
+          {&#xd;
+            &quot;fullUrl&quot;: &quot;https://demis.rki.de/fhir/QuestionnaireResponse/2f0c6b36-6421-35a8-8ea1-0e013db39410&quot;,&#xd;
+            &quot;resource&quot;: {&#xd;
+              &quot;resourceType&quot;: &quot;QuestionnaireResponse&quot;,&#xd;
+              &quot;id&quot;: &quot;2f0c6b36-6421-35a8-8ea1-0e013db39410&quot;,&#xd;
+              &quot;meta&quot;: {&#xd;
+                &quot;profile&quot;: [&#xd;
+                  &quot;https://demis.rki.de/fhir/StructureDefinition/DiseaseInformationCommon&quot;&#xd;
+                ]&#xd;
+              },&#xd;
+              &quot;questionnaire&quot;: &quot;https://demis.rki.de/fhir/Questionnaire/DiseaseQuestionsCommon&quot;,&#xd;
+              &quot;status&quot;: &quot;completed&quot;,&#xd;
+              &quot;subject&quot;: {&#xd;
+                &quot;reference&quot;: &quot;Patient/ac163863-fefa-3ce2-8511-7a4150d6ad43&quot;&#xd;
+              },&#xd;
+              &quot;item&quot;: [&#xd;
+                {&#xd;
+                  &quot;linkId&quot;: &quot;isDead&quot;,&#xd;
+                  &quot;answer&quot;: [&#xd;
+                    {&#xd;
+                      &quot;valueCoding&quot;: {&#xd;
+                        &quot;system&quot;: &quot;https://demis.rki.de/fhir/CodeSystem/yesOrNoAnswer&quot;,&#xd;
+                        &quot;code&quot;: &quot;no&quot;,&#xd;
+                        &quot;display&quot;: &quot;Nein&quot;&#xd;
+                      }&#xd;
+                    }&#xd;
+                  ]&#xd;
+                },&#xd;
+                {&#xd;
+                  &quot;linkId&quot;: &quot;militaryAffiliation&quot;,&#xd;
+                  &quot;answer&quot;: [&#xd;
+                    {&#xd;
+                      &quot;valueCoding&quot;: {&#xd;
+                        &quot;system&quot;: &quot;http://terminology.hl7.org/CodeSystem/v3-NullFlavor&quot;,&#xd;
+                        &quot;code&quot;: &quot;NASK&quot;,&#xd;
+                        &quot;display&quot;: &quot;not asked&quot;&#xd;
+                      }&#xd;
+                    }&#xd;
+                  ]&#xd;
+                },&#xd;
+                {&#xd;
+                  &quot;linkId&quot;: &quot;labSpecimenTaken&quot;,&#xd;
+                  &quot;answer&quot;: [&#xd;
+                    {&#xd;
+                      &quot;valueCoding&quot;: {&#xd;
+                        &quot;system&quot;: &quot;http://terminology.hl7.org/CodeSystem/v3-NullFlavor&quot;,&#xd;
+                        &quot;code&quot;: &quot;NASK&quot;,&#xd;
+                        &quot;display&quot;: &quot;not asked&quot;&#xd;
+                      }&#xd;
+                    }&#xd;
+                  ]&#xd;
+                },&#xd;
+                {&#xd;
+                  &quot;linkId&quot;: &quot;hospitalized&quot;,&#xd;
+                  &quot;answer&quot;: [&#xd;
+                    {&#xd;
+                      &quot;valueCoding&quot;: {&#xd;
+                        &quot;system&quot;: &quot;https://demis.rki.de/fhir/CodeSystem/yesOrNoAnswer&quot;,&#xd;
+                        &quot;code&quot;: &quot;yes&quot;,&#xd;
+                        &quot;display&quot;: &quot;Ja&quot;&#xd;
+                      },&#xd;
+                      &quot;item&quot;: [&#xd;
+                        {&#xd;
+                          &quot;linkId&quot;: &quot;hospitalizedGroup&quot;,&#xd;
+                          &quot;item&quot;: [&#xd;
+                            {&#xd;
+                              &quot;linkId&quot;: &quot;hospitalizedEncounter&quot;,&#xd;
+                              &quot;answer&quot;: [&#xd;
+                                {&#xd;
+                                  &quot;valueReference&quot;: {&#xd;
+                                    &quot;reference&quot;: &quot;Encounter/cf424cfb-8809-3b51-8ab2-d8bf979cbe8d&quot;&#xd;
+                                  }&#xd;
+                                }&#xd;
+                              ]&#xd;
+                            }&#xd;
+                          ]&#xd;
+                        }&#xd;
+                      ]&#xd;
+                    }&#xd;
+                  ]&#xd;
+                },&#xd;
+                {&#xd;
+                  &quot;linkId&quot;: &quot;infectProtectFacility&quot;,&#xd;
+                  &quot;answer&quot;: [&#xd;
+                    {&#xd;
+                      &quot;valueCoding&quot;: {&#xd;
+                        &quot;system&quot;: &quot;http://terminology.hl7.org/CodeSystem/v3-NullFlavor&quot;,&#xd;
+                        &quot;code&quot;: &quot;NASK&quot;,&#xd;
+                        &quot;display&quot;: &quot;not asked&quot;&#xd;
+                      }&#xd;
+                    }&#xd;
+                  ]&#xd;
+                },&#xd;
+                {&#xd;
+                  &quot;linkId&quot;: &quot;placeExposure&quot;,&#xd;
+                  &quot;answer&quot;: [&#xd;
+                    {&#xd;
+                      &quot;valueCoding&quot;: {&#xd;
+                        &quot;system&quot;: &quot;http://terminology.hl7.org/CodeSystem/v3-NullFlavor&quot;,&#xd;
+                        &quot;code&quot;: &quot;NASK&quot;,&#xd;
+                        &quot;display&quot;: &quot;not asked&quot;&#xd;
+                      }&#xd;
+                    }&#xd;
+                  ]&#xd;
+                },&#xd;
+                {&#xd;
+                  &quot;linkId&quot;: &quot;organDonation&quot;,&#xd;
+                  &quot;answer&quot;: [&#xd;
+                    {&#xd;
+                      &quot;valueCoding&quot;: {&#xd;
+                        &quot;system&quot;: &quot;http://terminology.hl7.org/CodeSystem/v3-NullFlavor&quot;,&#xd;
+                        &quot;code&quot;: &quot;NASK&quot;,&#xd;
+                        &quot;display&quot;: &quot;not asked&quot;&#xd;
+                      }&#xd;
+                    }&#xd;
+                  ]&#xd;
+                },&#xd;
+                {&#xd;
+                  &quot;linkId&quot;: &quot;additionalInformation&quot;,&#xd;
+                  &quot;answer&quot;: [&#xd;
+                    {&#xd;
+                      &quot;valueString&quot;: &quot;Die Meldungsgenerierung erfolgte automatisch über den Aufnahmedatensatz gem. §301 SGB V. Nicht alle erforderlichen Informationen konnten daher erhoben werden.&quot;&#xd;
+                    }&#xd;
+                  ]&#xd;
+                }&#xd;
+              ]&#xd;
+            }&#xd;
+          },&#xd;
+          {&#xd;
+            &quot;fullUrl&quot;: &quot;https://demis.rki.de/fhir/QuestionnaireResponse/146e5ced-db63-36e0-b8d3-85fa94218d8b&quot;,&#xd;
+            &quot;resource&quot;: {&#xd;
+              &quot;resourceType&quot;: &quot;QuestionnaireResponse&quot;,&#xd;
+              &quot;id&quot;: &quot;146e5ced-db63-36e0-b8d3-85fa94218d8b&quot;,&#xd;
+              &quot;meta&quot;: {&#xd;
+                &quot;profile&quot;: [&#xd;
+                  &quot;https://demis.rki.de/fhir/StructureDefinition/DiseaseInformationCVDD&quot;&#xd;
+                ]&#xd;
+              },&#xd;
+              &quot;questionnaire&quot;: &quot;https://demis.rki.de/fhir/Questionnaire/DiseaseQuestionsCVDD&quot;,&#xd;
+              &quot;status&quot;: &quot;completed&quot;,&#xd;
+              &quot;subject&quot;: {&#xd;
+                &quot;reference&quot;: &quot;Patient/ac163863-fefa-3ce2-8511-7a4150d6ad43&quot;&#xd;
+              },&#xd;
+              &quot;item&quot;: [&#xd;
+                {&#xd;
+                  &quot;linkId&quot;: &quot;infectionSource&quot;,&#xd;
+                  &quot;answer&quot;: [&#xd;
+                    {&#xd;
+                      &quot;valueCoding&quot;: {&#xd;
+                        &quot;system&quot;: &quot;http://terminology.hl7.org/CodeSystem/v3-NullFlavor&quot;,&#xd;
+                        &quot;code&quot;: &quot;NASK&quot;,&#xd;
+                        &quot;display&quot;: &quot;not asked&quot;&#xd;
+                      }&#xd;
+                    }&#xd;
+                  ]&#xd;
+                },&#xd;
+                {&#xd;
+                  &quot;linkId&quot;: &quot;infectionEnvironmentSetting&quot;,&#xd;
+                  &quot;answer&quot;: [&#xd;
+                    {&#xd;
+                      &quot;valueCoding&quot;: {&#xd;
+                        &quot;system&quot;: &quot;http://terminology.hl7.org/CodeSystem/v3-NullFlavor&quot;,&#xd;
+                        &quot;code&quot;: &quot;NASK&quot;,&#xd;
+                        &quot;display&quot;: &quot;not asked&quot;&#xd;
+                      }&#xd;
+                    }&#xd;
+                  ]&#xd;
+                },&#xd;
+                {&#xd;
+                  &quot;linkId&quot;: &quot;immunization&quot;,&#xd;
+                  &quot;answer&quot;: [&#xd;
+                    {&#xd;
+                      &quot;valueCoding&quot;: {&#xd;
+                        &quot;system&quot;: &quot;http://terminology.hl7.org/CodeSystem/v3-NullFlavor&quot;,&#xd;
+                        &quot;code&quot;: &quot;NASK&quot;,&#xd;
+                        &quot;display&quot;: &quot;not asked&quot;&#xd;
+                      }&#xd;
+                    }&#xd;
+                  ]&#xd;
+                }&#xd;
+              ]&#xd;
+            }&#xd;
+          }&#xd;
+        ]&#xd;
+      }&#xd;
+    }&#xd;
+  ]&#xd;
+}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+            <collectionProp name="HeaderManager.headers">
+              <elementProp name="" elementType="Header">
+                <stringProp name="Header.name">Content-Type</stringProp>
+                <stringProp name="Header.value">application/json</stringProp>
+              </elementProp>
+              <elementProp name="" elementType="Header">
+                <stringProp name="Header.name">Authorization</stringProp>
+                <stringProp name="Header.value">Bearer ${__property(AC_HOSP)}</stringProp>
+              </elementProp>
+            </collectionProp>
+          </HeaderManager>
+          <hashTree/>
+          <JSONPostProcessor guiclass="JSONPostProcessorGui" testclass="JSONPostProcessor" testname="JSON Extractor" enabled="false">
+            <stringProp name="JSONPostProcessor.referenceNames">BUNDLE_ID</stringProp>
+            <stringProp name="JSONPostProcessor.jsonPathExprs">$.parameter[0].resource.entry[0].resource.extension[0].valueIdentifier.value</stringProp>
+            <stringProp name="JSONPostProcessor.match_numbers"></stringProp>
+          </JSONPostProcessor>
+          <hashTree/>
+        </hashTree>
+        <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="IGS Transaction">
+          <boolProp name="TransactionController.includeTimers">false</boolProp>
+        </TransactionController>
+        <hashTree>
+          <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="IGS Variables">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="hashedValue" elementType="Argument">
+                <stringProp name="Argument.name">hashedValue</stringProp>
+                <stringProp name="Argument.value">9f7aa9b0e237587aedf78ff07b030b8b5bcfc48ede4eb0ced2cb7fe9d9c61865</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+              <elementProp name="extractedDorumentReferenceId" elementType="Argument">
+                <stringProp name="Argument.name">extractedDorumentReferenceId</stringProp>
+                <stringProp name="Argument.value">testReference</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+              <elementProp name="extractedLocationHeader" elementType="Argument">
+                <stringProp name="Argument.name">extractedLocationHeader</stringProp>
+                <stringProp name="Argument.value">testLocationHeader</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+              <elementProp name="fileSize" elementType="Argument">
+                <stringProp name="Argument.name">fileSize</stringProp>
+                <stringProp name="Argument.value"></stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+              <elementProp name="presignedUrl" elementType="Argument">
+                <stringProp name="Argument.name">presignedUrl</stringProp>
+                <stringProp name="Argument.value"></stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+                <stringProp name="Argument.desc">Array</stringProp>
+              </elementProp>
+              <elementProp name="etag" elementType="Argument">
+                <stringProp name="Argument.name">etag</stringProp>
+                <stringProp name="Argument.value"></stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+                <stringProp name="Argument.desc">Kommt als Antwort nach Upload. Muss bei Finalize übergeben werden.</stringProp>
+              </elementProp>
+              <elementProp name="uploadId" elementType="Argument">
+                <stringProp name="Argument.name">uploadId</stringProp>
+                <stringProp name="Argument.value"></stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+                <stringProp name="Argument.desc">UploadID für presigned URLs</stringProp>
+              </elementProp>
+              <elementProp name="extractedValidationStatus" elementType="Argument">
+                <stringProp name="Argument.name">extractedValidationStatus</stringProp>
+                <stringProp name="Argument.value">INITIAL</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+                <stringProp name="Argument.desc">Variable für Validation Status Polling</stringProp>
+              </elementProp>
+              <elementProp name="validationStatusTryCounter" elementType="Argument">
+                <stringProp name="Argument.name">validationStatusTryCounter</stringProp>
+                <stringProp name="Argument.value">1</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+              <elementProp name="validationStatusMaxTry" elementType="Argument">
+                <stringProp name="Argument.name">validationStatusMaxTry</stringProp>
+                <stringProp name="Argument.value">50</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+                <stringProp name="Argument.desc">Wie oft der Validation Status gepollt wird. Backend macht Long Polling mit 15s</stringProp>
+              </elementProp>
+              <elementProp name="partSize" elementType="Argument">
+                <stringProp name="Argument.name">partSize</stringProp>
+                <stringProp name="Argument.value">0</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+              <elementProp name="totalParts" elementType="Argument">
+                <stringProp name="Argument.name">totalParts</stringProp>
+                <stringProp name="Argument.value"></stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </Arguments>
+          <hashTree/>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="POST DocumentReference" enabled="true">
+            <stringProp name="TestPlan.comments">Hole eine DocumentReference vom IGS service um sie in der Meldung und beim Upload zu verwenden</stringProp>
+            <intProp name="HTTPSampler.concurrentPool">6</intProp>
+            <stringProp name="HTTPSampler.contentEncoding">utf-8</stringProp>
+            <stringProp name="HTTPSampler.path">/surveillance/notification-sequence/fhir/DocumentReference</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+            <stringProp name="HTTPSampler.method">POST</stringProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+            <elementProp name="HTTPsampler.Files" elementType="HTTPFileArgs">
+              <collectionProp name="HTTPFileArgs.files">
+                <elementProp name="../data/Labormeldung${PLZ}.json" elementType="HTTPFileArg">
+                  <stringProp name="File.mimetype">application/json</stringProp>
+                  <stringProp name="File.path">../data/Labormeldung${PLZ}.json</stringProp>
+                </elementProp>
+              </collectionProp>
+            </elementProp>
+            <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+              <collectionProp name="Arguments.arguments">
+                <elementProp name="" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value">{&#xd;
+    &quot;resourceType&quot;: &quot;DocumentReference&quot;,&#xd;
+    &quot;content&quot;: [{&#xd;
+            &quot;attachment&quot;: {&#xd;
+                &quot;hash&quot;: &quot;${hashedValue}&quot;&#xd;
+            }&#xd;
+        }&#xd;
+    ]&#xd;
+}&#xd;
+</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                </elementProp>
+              </collectionProp>
+            </elementProp>
+          </HTTPSamplerProxy>
+          <hashTree>
+            <JSR223PreProcessor guiclass="TestBeanGUI" testclass="JSR223PreProcessor" testname="CreateHashFromFile">
+              <stringProp name="cacheKey">true</stringProp>
+              <stringProp name="filename"></stringProp>
+              <stringProp name="parameters"></stringProp>
+              <stringProp name="script">import java.security.MessageDigest
+import java.nio.file.Files
+import java.nio.file.Paths
+import java.math.BigInteger
+
+// Path to the file you want to hash
+String filePath = vars.get(&quot;fastaFilePath&quot;)
+
+// Read bytes from file
+byte[] fileBytes = Files.readAllBytes(Paths.get(filePath))
+
+// Generate SHA-256 Hash
+MessageDigest digest = MessageDigest.getInstance(&quot;SHA-256&quot;)
+byte[] encodedhash = digest.digest(fileBytes)
+
+// Convert byte array into signum representation
+BigInteger number = new BigInteger(1, encodedhash)
+
+// Convert message digest into hex value
+StringBuilder hexString = new StringBuilder(number.toString(16))
+
+// Pad with leading zeros
+while (hexString.length() &lt; 32) {
+    hexString.insert(0, &apos;0&apos;)
+}
+
+// Store the hash in a JMeter variable
+vars.put(&quot;hashedValue&quot;, hexString.toString())</stringProp>
+              <stringProp name="scriptLanguage">groovy</stringProp>
+            </JSR223PreProcessor>
+            <hashTree/>
+            <JSR223PreProcessor guiclass="TestBeanGUI" testclass="JSR223PreProcessor" testname="determineFileSize" enabled="true">
+              <stringProp name="scriptLanguage">groovy</stringProp>
+              <stringProp name="parameters"></stringProp>
+              <stringProp name="filename"></stringProp>
+              <stringProp name="cacheKey">true</stringProp>
+              <stringProp name="script">import java.nio.file.Files
+import java.nio.file.Paths
+
+// Replace &apos;yourFilePath&apos; with the actual path to your file
+def filePath = vars.get(&quot;fastaFilePath&quot;)
+def fileSize = Files.size(Paths.get(filePath))
+// Optionally, store the file size in a JMeter variable
+vars.put(&quot;fileSize&quot;, fileSize.toString())
+// Log the file size
+log.info(&quot;File size: &quot;+ fileSize)
+</stringProp>
+            </JSR223PreProcessor>
+            <hashTree/>
+            <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="set plz ga token" enabled="true">
+              <boolProp name="resetInterpreter">false</boolProp>
+              <stringProp name="parameters"></stringProp>
+              <stringProp name="filename"></stringProp>
+              <stringProp name="script">//vars.put(&quot;PLZ&quot;,&quot;21481&quot;);
+//vars.put(&quot;GA&quot;,&quot;1.01.0.53.&quot;);
+vars.put(&quot;ACCESSTOKEN&quot;,props.get(&quot;AC_IGS&quot;));</stringProp>
+            </BeanShellPreProcessor>
+            <hashTree/>
+            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="token header" enabled="true">
+              <collectionProp name="HeaderManager.headers">
+                <elementProp name="" elementType="Header">
+                  <stringProp name="Header.name">Content-Type</stringProp>
+                  <stringProp name="Header.value">application/json</stringProp>
+                </elementProp>
+                <elementProp name="" elementType="Header">
+                  <stringProp name="Header.name">Authorization</stringProp>
+                  <stringProp name="Header.value">Bearer ${ACCESSTOKEN}</stringProp>
+                </elementProp>
+                <elementProp name="" elementType="Header">
+                  <stringProp name="Header.name">User-Agent</stringProp>
+                  <stringProp name="Header.value">${USER_AGENT}</stringProp>
+                </elementProp>
+                <elementProp name="" elementType="Header">
+                  <stringProp name="Header.name">Accept</stringProp>
+                  <stringProp name="Header.value">application/json</stringProp>
+                </elementProp>
+              </collectionProp>
+            </HeaderManager>
+            <hashTree/>
+            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Check for Reference" enabled="true">
+              <collectionProp name="Asserion.test_strings">
+                <stringProp name="1847689479">&quot;resourceType&quot;:&quot;DocumentReference&quot;,&quot;id&quot;:&quot;</stringProp>
+              </collectionProp>
+              <stringProp name="Assertion.custom_message"></stringProp>
+              <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+              <boolProp name="Assertion.assume_success">false</boolProp>
+              <intProp name="Assertion.test_type">16</intProp>
+              <stringProp name="Assertion.scope">all</stringProp>
+            </ResponseAssertion>
+            <hashTree/>
+            <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="extract location header" enabled="true">
+              <stringProp name="RegexExtractor.useHeaders">false</stringProp>
+              <stringProp name="RegexExtractor.refname">extractedLocationHeader</stringProp>
+              <stringProp name="RegexExtractor.regex">location</stringProp>
+              <stringProp name="RegexExtractor.template">$1$</stringProp>
+              <stringProp name="RegexExtractor.default">NOT_FOUND</stringProp>
+              <boolProp name="RegexExtractor.default_empty_value">false</boolProp>
+              <stringProp name="RegexExtractor.match_number">1</stringProp>
+            </RegexExtractor>
+            <hashTree/>
+            <JSONPostProcessor guiclass="JSONPostProcessorGui" testclass="JSONPostProcessor" testname="Extract Reference from json" enabled="true">
+              <stringProp name="JSONPostProcessor.referenceNames">extractedDocumentReferenceId</stringProp>
+              <stringProp name="JSONPostProcessor.jsonPathExprs">$.id</stringProp>
+              <stringProp name="JSONPostProcessor.match_numbers"></stringProp>
+              <stringProp name="Sample.scope">all</stringProp>
+              <stringProp name="JSONPostProcessor.defaultValues">idNotFound</stringProp>
+            </JSONPostProcessor>
+            <hashTree/>
+          </hashTree>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET Presigned URLs" enabled="true">
+            <stringProp name="HTTPSampler.path">surveillance/notification-sequence/S3Controller/upload/${extractedDocumentReferenceId}/s3-upload-info?fileSize=${fileSize}</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+            <stringProp name="HTTPSampler.method">GET</stringProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+            <boolProp name="HTTPSampler.postBodyRaw">false</boolProp>
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables">
+              <collectionProp name="Arguments.arguments"/>
+            </elementProp>
+          </HTTPSamplerProxy>
+          <hashTree>
+            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="token header" enabled="true">
+              <collectionProp name="HeaderManager.headers">
+                <elementProp name="" elementType="Header">
+                  <stringProp name="Header.name">Content-Type</stringProp>
+                  <stringProp name="Header.value">application/json; charset=UTF-8</stringProp>
+                </elementProp>
+                <elementProp name="" elementType="Header">
+                  <stringProp name="Header.name">Authorization</stringProp>
+                  <stringProp name="Header.value">Bearer ${ACCESSTOKEN}</stringProp>
+                </elementProp>
+                <elementProp name="" elementType="Header">
+                  <stringProp name="Header.name">User-Agent</stringProp>
+                  <stringProp name="Header.value">${USER_AGENT}</stringProp>
+                </elementProp>
+                <elementProp name="" elementType="Header">
+                  <stringProp name="Header.name">Accept</stringProp>
+                  <stringProp name="Header.value">application/json</stringProp>
+                </elementProp>
+              </collectionProp>
+            </HeaderManager>
+            <hashTree/>
+            <JSONPostProcessor guiclass="JSONPostProcessorGui" testclass="JSONPostProcessor" testname="extract URLs" enabled="true">
+              <stringProp name="JSONPostProcessor.referenceNames">presignedUrl</stringProp>
+              <stringProp name="JSONPostProcessor.jsonPathExprs">$.presignedUrls[*]</stringProp>
+              <stringProp name="JSONPostProcessor.match_numbers">-1</stringProp>
+            </JSONPostProcessor>
+            <hashTree/>
+            <JSONPostProcessor guiclass="JSONPostProcessorGui" testclass="JSONPostProcessor" testname="extract Upload ID" enabled="true">
+              <stringProp name="JSONPostProcessor.referenceNames">uploadId</stringProp>
+              <stringProp name="JSONPostProcessor.jsonPathExprs">$.uploadId</stringProp>
+              <stringProp name="JSONPostProcessor.match_numbers"></stringProp>
+            </JSONPostProcessor>
+            <hashTree/>
+          </hashTree>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Upload File fasta" enabled="true">
+            <stringProp name="HTTPSampler.path">${presignedUrl_1}</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+            <stringProp name="HTTPSampler.method">PUT</stringProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+            <elementProp name="HTTPsampler.Files" elementType="HTTPFileArgs">
+              <collectionProp name="HTTPFileArgs.files">
+                <elementProp name="${fastaFilePath}" elementType="HTTPFileArg">
+                  <stringProp name="File.mimetype">application/octet-stream</stringProp>
+                  <stringProp name="File.path">${fastaFilePath}</stringProp>
+                  <stringProp name="File.paramname"></stringProp>
+                </elementProp>
+              </collectionProp>
+            </elementProp>
+            <boolProp name="HTTPSampler.postBodyRaw">false</boolProp>
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables">
+              <collectionProp name="Arguments.arguments"/>
+            </elementProp>
+          </HTTPSamplerProxy>
+          <hashTree>
+            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="token header" enabled="true">
+              <collectionProp name="HeaderManager.headers">
+                <elementProp name="" elementType="Header">
+                  <stringProp name="Header.name">Content-Type</stringProp>
+                  <stringProp name="Header.value">application/json</stringProp>
+                </elementProp>
+                <elementProp name="" elementType="Header">
+                  <stringProp name="Header.name">User-Agent</stringProp>
+                  <stringProp name="Header.value">${USER_AGENT}</stringProp>
+                </elementProp>
+                <elementProp name="" elementType="Header">
+                  <stringProp name="Header.name">Accept</stringProp>
+                  <stringProp name="Header.value">application/json</stringProp>
+                </elementProp>
+              </collectionProp>
+            </HeaderManager>
+            <hashTree/>
+            <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="extract ETag" enabled="true">
+              <stringProp name="RegexExtractor.useHeaders">true</stringProp>
+              <stringProp name="RegexExtractor.refname">etag</stringProp>
+              <stringProp name="RegexExtractor.regex">etag:\s*&quot;(.+?)&quot;</stringProp>
+              <stringProp name="RegexExtractor.template">$1$</stringProp>
+              <stringProp name="RegexExtractor.default">NOT_FOUND</stringProp>
+              <boolProp name="RegexExtractor.default_empty_value">false</boolProp>
+              <stringProp name="RegexExtractor.match_number"></stringProp>
+            </RegexExtractor>
+            <hashTree/>
+          </hashTree>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Finalize Upload fasta" enabled="true">
+            <stringProp name="HTTPSampler.path">surveillance/notification-sequence/S3Controller/upload/${extractedDocumentReferenceId}/$finish-upload</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+            <stringProp name="HTTPSampler.method">POST</stringProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+            <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+              <collectionProp name="Arguments.arguments">
+                <elementProp name="" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value">{&quot;uploadId&quot;:&quot;${uploadId}&quot;,&quot;completedChunks&quot;:[{&quot;partNumber&quot;:1,&quot;eTag&quot;:&quot;\&quot;${etag}\&quot;&quot;}]}</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                </elementProp>
+              </collectionProp>
+            </elementProp>
+          </HTTPSamplerProxy>
+          <hashTree>
+            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="token header" enabled="true">
+              <collectionProp name="HeaderManager.headers">
+                <elementProp name="" elementType="Header">
+                  <stringProp name="Header.name">Content-Type</stringProp>
+                  <stringProp name="Header.value">application/json</stringProp>
+                </elementProp>
+                <elementProp name="" elementType="Header">
+                  <stringProp name="Header.name">Authorization</stringProp>
+                  <stringProp name="Header.value">Bearer ${ACCESSTOKEN}</stringProp>
+                </elementProp>
+                <elementProp name="" elementType="Header">
+                  <stringProp name="Header.name">User-Agent</stringProp>
+                  <stringProp name="Header.value">${USER_AGENT}</stringProp>
+                </elementProp>
+                <elementProp name="" elementType="Header">
+                  <stringProp name="Header.name">Accept</stringProp>
+                  <stringProp name="Header.value">application/json</stringProp>
+                </elementProp>
+              </collectionProp>
+            </HeaderManager>
+            <hashTree/>
+          </hashTree>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Start Validation" enabled="true">
+            <stringProp name="HTTPSampler.path">surveillance/notification-sequence/S3Controller/upload/${extractedDocumentReferenceId}/$validate</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+            <stringProp name="HTTPSampler.method">POST</stringProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+            <boolProp name="HTTPSampler.postBodyRaw">false</boolProp>
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables">
+              <collectionProp name="Arguments.arguments"/>
+            </elementProp>
+          </HTTPSamplerProxy>
+          <hashTree>
+            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="token header" enabled="true">
+              <collectionProp name="HeaderManager.headers">
+                <elementProp name="" elementType="Header">
+                  <stringProp name="Header.name">Content-Type</stringProp>
+                  <stringProp name="Header.value">application/json</stringProp>
+                </elementProp>
+                <elementProp name="" elementType="Header">
+                  <stringProp name="Header.name">Authorization</stringProp>
+                  <stringProp name="Header.value">Bearer ${ACCESSTOKEN}</stringProp>
+                </elementProp>
+                <elementProp name="" elementType="Header">
+                  <stringProp name="Header.name">User-Agent</stringProp>
+                  <stringProp name="Header.value">${USER_AGENT}</stringProp>
+                </elementProp>
+                <elementProp name="" elementType="Header">
+                  <stringProp name="Header.name">Accept</stringProp>
+                  <stringProp name="Header.value">application/json</stringProp>
+                </elementProp>
+              </collectionProp>
+            </HeaderManager>
+            <hashTree/>
+          </hashTree>
+          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Fasta Validation 4kB" enabled="true">
+            <boolProp name="TransactionController.parent">true</boolProp>
+            <boolProp name="TransactionController.includeTimers">false</boolProp>
+          </TransactionController>
+          <hashTree>
+            <WhileController guiclass="WhileControllerGui" testclass="WhileController" testname="Fetch Validation Status Loop" enabled="true">
+              <stringProp name="WhileController.condition">${__jexl3(vars.get(&quot;__jm__Fetch Validation Status Loop__idx&quot;) &lt; vars.get(&quot;validationStatusMaxTry&quot;).toLong() &amp;&amp; (vars.get(&quot;extractedValidationStatus&quot;) != &quot;VALID&quot;),)}</stringProp>
+            </WhileController>
+            <hashTree>
+              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Get Validation Status" enabled="true">
+                <stringProp name="HTTPSampler.path">surveillance/notification-sequence/S3Controller/upload/${extractedDocumentReferenceId}/$validation-status</stringProp>
+                <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+                <stringProp name="HTTPSampler.method">GET</stringProp>
+                <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+                <boolProp name="HTTPSampler.postBodyRaw">false</boolProp>
+                <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables">
+                  <collectionProp name="Arguments.arguments"/>
+                </elementProp>
+              </HTTPSamplerProxy>
+              <hashTree>
+                <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="token header" enabled="true">
+                  <collectionProp name="HeaderManager.headers">
+                    <elementProp name="" elementType="Header">
+                      <stringProp name="Header.name">Content-Type</stringProp>
+                      <stringProp name="Header.value">application/json</stringProp>
+                    </elementProp>
+                    <elementProp name="" elementType="Header">
+                      <stringProp name="Header.name">Authorization</stringProp>
+                      <stringProp name="Header.value">Bearer ${__groovy(props.get(&quot;global_igs_token&quot;))}</stringProp>
+                    </elementProp>
+                    <elementProp name="" elementType="Header">
+                      <stringProp name="Header.name">User-Agent</stringProp>
+                      <stringProp name="Header.value">${USER_AGENT}</stringProp>
+                    </elementProp>
+                    <elementProp name="" elementType="Header">
+                      <stringProp name="Header.name">Accept</stringProp>
+                      <stringProp name="Header.value">application/json</stringProp>
+                    </elementProp>
+                  </collectionProp>
+                </HeaderManager>
+                <hashTree/>
+                <JSONPostProcessor guiclass="JSONPostProcessorGui" testclass="JSONPostProcessor" testname="JSON Extractor" enabled="true">
+                  <stringProp name="JSONPostProcessor.referenceNames">extractedValidationStatus</stringProp>
+                  <stringProp name="JSONPostProcessor.jsonPathExprs">$.status</stringProp>
+                  <stringProp name="JSONPostProcessor.match_numbers">1</stringProp>
+                  <stringProp name="Scope.variable">extractedValidationStatus</stringProp>
+                  <stringProp name="JSONPostProcessor.defaultValues">PROPERTY_NOT_FOUND</stringProp>
+                </JSONPostProcessor>
+                <hashTree/>
+              </hashTree>
+            </hashTree>
+          </hashTree>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="POST IGS Meldung FastA" enabled="true">
+            <intProp name="HTTPSampler.concurrentPool">6</intProp>
+            <stringProp name="HTTPSampler.contentEncoding">utf-8</stringProp>
+            <stringProp name="HTTPSampler.path">/surveillance/notification-sequence/fhir/%24process-notification-sequence</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+            <stringProp name="HTTPSampler.method">POST</stringProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+            <elementProp name="HTTPsampler.Files" elementType="HTTPFileArgs">
+              <collectionProp name="HTTPFileArgs.files">
+                <elementProp name="../data/Labormeldung${PLZ}.json" elementType="HTTPFileArg">
+                  <stringProp name="File.mimetype">application/json</stringProp>
+                  <stringProp name="File.path">../data/Labormeldung${PLZ}.json</stringProp>
+                </elementProp>
+              </collectionProp>
+            </elementProp>
+            <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+              <collectionProp name="Arguments.arguments">
+                <elementProp name="" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value">{&#xd;
+    &quot;resourceType&quot;: &quot;Bundle&quot;,&#xd;
+    &quot;meta&quot;: {&#xd;
+        &quot;lastUpdated&quot;: &quot;2024-07-12T14:25:34.454+02:00&quot;,&#xd;
+        &quot;profile&quot;: [&quot;https://demis.rki.de/fhir/igs/StructureDefinition/NotificationBundleSequence&quot;]&#xd;
+    },&#xd;
+    &quot;identifier&quot;: {&#xd;
+        &quot;system&quot;: &quot;https://demis.rki.de/fhir/NamingSystem/NotificationBundleId&quot;,&#xd;
+        &quot;value&quot;: &quot;6ea67868-d943-464b-8395-7086cc09ce3c&quot;&#xd;
+    },&#xd;
+    &quot;type&quot;: &quot;document&quot;,&#xd;
+    &quot;timestamp&quot;: &quot;2024-07-12T14:25:34.492+02:00&quot;,&#xd;
+    &quot;entry&quot;: [{&#xd;
+            &quot;fullUrl&quot;: &quot;https://demis.rki.de/fhir/igs/Composition/9e29fd9b-1ebe-4ff4-ad4b-4a2c3c348fb4&quot;,&#xd;
+            &quot;resource&quot;: {&#xd;
+                &quot;resourceType&quot;: &quot;Composition&quot;,&#xd;
+                &quot;id&quot;: &quot;9e29fd9b-1ebe-4ff4-ad4b-4a2c3c348fb4&quot;,&#xd;
+                &quot;meta&quot;: {&#xd;
+                    &quot;profile&quot;: [&quot;https://demis.rki.de/fhir/igs/StructureDefinition/NotificationSequence&quot;]&#xd;
+                },&#xd;
+                &quot;identifier&quot;: {&#xd;
+                    &quot;system&quot;: &quot;https://demis.rki.de/fhir/NamingSystem/NotificationId&quot;,&#xd;
+                    &quot;value&quot;: &quot;d1c9252a-9809-4f17-bc59-16d6b2abaaae&quot;&#xd;
+                },&#xd;
+                &quot;status&quot;: &quot;final&quot;,&#xd;
+                &quot;type&quot;: {&#xd;
+                    &quot;coding&quot;: [{&#xd;
+                            &quot;system&quot;: &quot;http://loinc.org&quot;,&#xd;
+                            &quot;code&quot;: &quot;34782-3&quot;,&#xd;
+                            &quot;display&quot;: &quot;Infectious disease Note&quot;&#xd;
+                        }&#xd;
+                    ]&#xd;
+                },&#xd;
+                &quot;category&quot;: [{&#xd;
+                        &quot;coding&quot;: [{&#xd;
+                                &quot;system&quot;: &quot;http://loinc.org&quot;,&#xd;
+                                &quot;code&quot;: &quot;11502-2&quot;,&#xd;
+                                &quot;display&quot;: &quot;Laboratory report&quot;&#xd;
+                            }&#xd;
+                        ]&#xd;
+                    }&#xd;
+                ],&#xd;
+                &quot;subject&quot;: {&#xd;
+                    &quot;reference&quot;: &quot;Patient/bb2997b1-c346-4cd7-9074-c7c1845614fa&quot;&#xd;
+                },&#xd;
+                &quot;date&quot;: &quot;2024-07-12T14:25:34+02:00&quot;,&#xd;
+                &quot;author&quot;: [{&#xd;
+                        &quot;reference&quot;: &quot;PractitionerRole/2d6bdb88-b8f6-4fb4-9f8e-f851b2e88e36&quot;&#xd;
+                    }&#xd;
+                ],&#xd;
+                &quot;title&quot;: &quot;Sequenzmeldung&quot;,&#xd;
+                &quot;relatesTo&quot;: [{&#xd;
+                        &quot;code&quot;: &quot;appends&quot;,&#xd;
+                        &quot;targetReference&quot;: {&#xd;
+                            &quot;type&quot;: &quot;Composition&quot;,&#xd;
+                            &quot;identifier&quot;: {&#xd;
+                                &quot;system&quot;: &quot;https://demis.rki.de/fhir/NamingSystem/NotificationId&quot;,&#xd;
+                                &quot;value&quot;: &quot;f8585efb-1872-4a4f-b88d-8c889e93487b&quot;&#xd;
+                            }&#xd;
+                        }&#xd;
+                    }&#xd;
+                ],&#xd;
+                &quot;section&quot;: [{&#xd;
+                        &quot;code&quot;: {&#xd;
+                            &quot;coding&quot;: [{&#xd;
+                                    &quot;system&quot;: &quot;http://loinc.org&quot;,&#xd;
+                                    &quot;code&quot;: &quot;11502-2&quot;,&#xd;
+                                    &quot;display&quot;: &quot;Laboratory report&quot;&#xd;
+                                }&#xd;
+                            ]&#xd;
+                        },&#xd;
+                        &quot;entry&quot;: [{&#xd;
+                                &quot;reference&quot;: &quot;DiagnosticReport/efa17b70-1790-45ea-8d79-51a160fb6a05&quot;&#xd;
+                            }&#xd;
+                        ]&#xd;
+                    }&#xd;
+                ]&#xd;
+            }&#xd;
+        }, {&#xd;
+            &quot;fullUrl&quot;: &quot;https://demis.rki.de/fhir/igs/Patient/bb2997b1-c346-4cd7-9074-c7c1845614fa&quot;,&#xd;
+            &quot;resource&quot;: {&#xd;
+                &quot;resourceType&quot;: &quot;Patient&quot;,&#xd;
+                &quot;id&quot;: &quot;bb2997b1-c346-4cd7-9074-c7c1845614fa&quot;,&#xd;
+                &quot;meta&quot;: {&#xd;
+                    &quot;profile&quot;: [&quot;https://demis.rki.de/fhir/StructureDefinition/NotifiedPersonNotByName&quot;]&#xd;
+                }&#xd;
+            }&#xd;
+        }, {&#xd;
+            &quot;fullUrl&quot;: &quot;https://demis.rki.de/fhir/igs/PractitionerRole/2d6bdb88-b8f6-4fb4-9f8e-f851b2e88e36&quot;,&#xd;
+            &quot;resource&quot;: {&#xd;
+                &quot;resourceType&quot;: &quot;PractitionerRole&quot;,&#xd;
+                &quot;id&quot;: &quot;2d6bdb88-b8f6-4fb4-9f8e-f851b2e88e36&quot;,&#xd;
+                &quot;meta&quot;: {&#xd;
+                    &quot;profile&quot;: [&quot;https://demis.rki.de/fhir/StructureDefinition/NotifierRole&quot;]&#xd;
+                },&#xd;
+                &quot;organization&quot;: {&#xd;
+                    &quot;reference&quot;: &quot;Organization/e6a96265-4e8b-4caa-b209-ee534ca8c7a2&quot;&#xd;
+                }&#xd;
+            }&#xd;
+        }, {&#xd;
+            &quot;fullUrl&quot;: &quot;https://demis.rki.de/fhir/igs/Organization/e6a96265-4e8b-4caa-b209-ee534ca8c7a2&quot;,&#xd;
+            &quot;resource&quot;: {&#xd;
+                &quot;resourceType&quot;: &quot;Organization&quot;,&#xd;
+                &quot;id&quot;: &quot;e6a96265-4e8b-4caa-b209-ee534ca8c7a2&quot;,&#xd;
+                &quot;meta&quot;: {&#xd;
+                    &quot;profile&quot;: [&quot;https://demis.rki.de/fhir/StructureDefinition/NotifierFacility&quot;]&#xd;
+                },&#xd;
+                &quot;identifier&quot;: [{&#xd;
+                        &quot;system&quot;: &quot;https://demis.rki.de/fhir/NamingSystem/DemisLaboratoryId&quot;,&#xd;
+                        &quot;value&quot;: &quot;10285&quot;&#xd;
+                    }&#xd;
+                ],&#xd;
+                &quot;type&quot;: [{&#xd;
+                        &quot;coding&quot;: [{&#xd;
+                                &quot;system&quot;: &quot;https://demis.rki.de/fhir/CodeSystem/organizationType&quot;,&#xd;
+                                &quot;code&quot;: &quot;refLab&quot;,&#xd;
+                                &quot;display&quot;: &quot;Einrichtung der Spezialdiagnostik&quot;&#xd;
+                            }&#xd;
+                        ]&#xd;
+                    }&#xd;
+                ],&#xd;
+                &quot;name&quot;: &quot;Nationales Referenzzentrum für Influenza, FG17, RKI&quot;,&#xd;
+                &quot;telecom&quot;: [{&#xd;
+                        &quot;system&quot;: &quot;email&quot;,&#xd;
+                        &quot;value&quot;: &quot;NRZ-Influenza@rki.de&quot;,&#xd;
+                        &quot;use&quot;: &quot;work&quot;&#xd;
+                    }&#xd;
+                ],&#xd;
+                &quot;address&quot;: [{&#xd;
+                        &quot;line&quot;: [&quot;Seestr. 10&quot;],&#xd;
+                        &quot;city&quot;: &quot;Berlin&quot;,&#xd;
+                        &quot;postalCode&quot;: &quot;13353&quot;,&#xd;
+                        &quot;country&quot;: &quot;20422&quot;&#xd;
+                    }&#xd;
+                ]&#xd;
+            }&#xd;
+        }, {&#xd;
+            &quot;fullUrl&quot;: &quot;https://demis.rki.de/fhir/igs/PractitionerRole/81de9f86-0325-4d66-a8eb-b5351a79869f&quot;,&#xd;
+            &quot;resource&quot;: {&#xd;
+                &quot;resourceType&quot;: &quot;PractitionerRole&quot;,&#xd;
+                &quot;id&quot;: &quot;81de9f86-0325-4d66-a8eb-b5351a79869f&quot;,&#xd;
+                &quot;meta&quot;: {&#xd;
+                    &quot;profile&quot;: [&quot;https://demis.rki.de/fhir/StructureDefinition/SubmittingRole&quot;]&#xd;
+                },&#xd;
+                &quot;organization&quot;: {&#xd;
+                    &quot;reference&quot;: &quot;Organization/bd8aa491-ec2f-45e0-b799-3ab67e99cd4c&quot;&#xd;
+                }&#xd;
+            }&#xd;
+        }, {&#xd;
+            &quot;fullUrl&quot;: &quot;https://demis.rki.de/fhir/igs/Organization/bd8aa491-ec2f-45e0-b799-3ab67e99cd4c&quot;,&#xd;
+            &quot;resource&quot;: {&#xd;
+                &quot;resourceType&quot;: &quot;Organization&quot;,&#xd;
+                &quot;id&quot;: &quot;bd8aa491-ec2f-45e0-b799-3ab67e99cd4c&quot;,&#xd;
+                &quot;meta&quot;: {&#xd;
+                    &quot;profile&quot;: [&quot;https://demis.rki.de/fhir/StructureDefinition/SubmittingFacility&quot;]&#xd;
+                },&#xd;
+                &quot;identifier&quot;: [{&#xd;
+                        &quot;system&quot;: &quot;https://fhir.kbv.de/NamingSystem/KBV_NS_Base_BSNR&quot;,&#xd;
+                        &quot;value&quot;: &quot;987654321&quot;&#xd;
+                    }&#xd;
+                ],&#xd;
+                &quot;name&quot;: &quot;Primärlabor&quot;,&#xd;
+                &quot;telecom&quot;: [{&#xd;
+                        &quot;system&quot;: &quot;phone&quot;,&#xd;
+                        &quot;value&quot;: &quot;03098765410&quot;,&#xd;
+                        &quot;use&quot;: &quot;work&quot;&#xd;
+                    }, {&#xd;
+                        &quot;system&quot;: &quot;fax&quot;,&#xd;
+                        &quot;value&quot;: &quot;03098765411&quot;,&#xd;
+                        &quot;use&quot;: &quot;work&quot;&#xd;
+                    }, {&#xd;
+                        &quot;system&quot;: &quot;email&quot;,&#xd;
+                        &quot;value&quot;: &quot;ifsg@primaerlabor-gibt-es-nicht.de&quot;,&#xd;
+                        &quot;use&quot;: &quot;work&quot;&#xd;
+                    }, {&#xd;
+                        &quot;system&quot;: &quot;url&quot;,&#xd;
+                        &quot;value&quot;: &quot;http://primaerlabor-gibt-es-nicht.de&quot;,&#xd;
+                        &quot;use&quot;: &quot;work&quot;&#xd;
+                    }&#xd;
+                ],&#xd;
+                &quot;address&quot;: [{&#xd;
+                        &quot;line&quot;: [&quot;Dingsweg 321&quot;],&#xd;
+                        &quot;city&quot;: &quot;Berlin&quot;,&#xd;
+                        &quot;postalCode&quot;: &quot;13055&quot;,&#xd;
+                        &quot;country&quot;: &quot;20422&quot;&#xd;
+                    }&#xd;
+                ],&#xd;
+                &quot;contact&quot;: [{&#xd;
+                        &quot;name&quot;: {&#xd;
+                            &quot;use&quot;: &quot;official&quot;,&#xd;
+                            &quot;family&quot;: &quot;Kontakt&quot;,&#xd;
+                            &quot;given&quot;: [&quot;Caroline&quot;]&#xd;
+                        }&#xd;
+                    }&#xd;
+                ]&#xd;
+            }&#xd;
+        }, {&#xd;
+            &quot;fullUrl&quot;: &quot;https://demis.rki.de/fhir/igs/DiagnosticReport/efa17b70-1790-45ea-8d79-51a160fb6a05&quot;,&#xd;
+            &quot;resource&quot;: {&#xd;
+                &quot;resourceType&quot;: &quot;DiagnosticReport&quot;,&#xd;
+                &quot;id&quot;: &quot;efa17b70-1790-45ea-8d79-51a160fb6a05&quot;,&#xd;
+                &quot;meta&quot;: {&#xd;
+                    &quot;profile&quot;: [&quot;https://demis.rki.de/fhir/igs/StructureDefinition/LaboratoryReportSequence&quot;]&#xd;
+                },&#xd;
+                &quot;status&quot;: &quot;final&quot;,&#xd;
+                &quot;code&quot;: {&#xd;
+                    &quot;coding&quot;: [{&#xd;
+                            &quot;system&quot;: &quot;https://demis.rki.de/fhir/CodeSystem/notificationCategory&quot;,&#xd;
+                            &quot;code&quot;: &quot;cvdp&quot;,&#xd;
+                            &quot;display&quot;: &quot;Severe-Acute-Respiratory-Syndrome-Coronavirus-2 (SARS-CoV-2)&quot;&#xd;
+                        }&#xd;
+                    ]&#xd;
+                },&#xd;
+                &quot;subject&quot;: {&#xd;
+                    &quot;reference&quot;: &quot;Patient/bb2997b1-c346-4cd7-9074-c7c1845614fa&quot;&#xd;
+                },&#xd;
+                &quot;issued&quot;: &quot;2024-07-12T14:25:34.580+02:00&quot;,&#xd;
+                &quot;result&quot;: [{&#xd;
+                        &quot;reference&quot;: &quot;Observation/e5053065-b9ca-439d-9a9c-a5dbc272a5f1&quot;&#xd;
+                    }&#xd;
+                ],&#xd;
+                &quot;conclusion&quot;: &quot;NACHWEIS eines meldepflichtigen Erregers&quot;,&#xd;
+                &quot;conclusionCode&quot;: [{&#xd;
+                        &quot;coding&quot;: [{&#xd;
+                                &quot;system&quot;: &quot;https://demis.rki.de/fhir/CodeSystem/conclusionCode&quot;,&#xd;
+                                &quot;code&quot;: &quot;pathogenDetected&quot;,&#xd;
+                                &quot;display&quot;: &quot;Meldepflichtiger Erreger nachgewiesen&quot;&#xd;
+                            }&#xd;
+                        ]&#xd;
+                    }&#xd;
+                ]&#xd;
+            }&#xd;
+        }, {&#xd;
+            &quot;fullUrl&quot;: &quot;https://demis.rki.de/fhir/igs/Device/ef347b22-def6-419a-825c-bcd95f88cdb2&quot;,&#xd;
+            &quot;resource&quot;: {&#xd;
+                &quot;resourceType&quot;: &quot;Device&quot;,&#xd;
+                &quot;id&quot;: &quot;ef347b22-def6-419a-825c-bcd95f88cdb2&quot;,&#xd;
+                &quot;meta&quot;: {&#xd;
+                    &quot;profile&quot;: [&quot;https://demis.rki.de/fhir/igs/StructureDefinition/SequencingDevice&quot;]&#xd;
+                },&#xd;
+                &quot;deviceName&quot;: [{&#xd;
+                        &quot;name&quot;: &quot;GridION&quot;,&#xd;
+                        &quot;type&quot;: &quot;model-name&quot;&#xd;
+                    }&#xd;
+                ],&#xd;
+                &quot;type&quot;: {&#xd;
+                    &quot;coding&quot;: [{&#xd;
+                            &quot;system&quot;: &quot;https://demis.rki.de/fhir/igs/CodeSystem/sequencingPlatform&quot;,&#xd;
+                            &quot;code&quot;: &quot;oxford_nanopore&quot;,&#xd;
+                            &quot;display&quot;: &quot;Oxford Nanopore platform type. nanopore-based electronic single molecule analysis.&quot;&#xd;
+                        }&#xd;
+                    ]&#xd;
+                }&#xd;
+            }&#xd;
+        }, {&#xd;
+            &quot;fullUrl&quot;: &quot;https://demis.rki.de/fhir/igs/Specimen/758b7c5d-5935-4830-a15a-2440f7c29ef2&quot;,&#xd;
+            &quot;resource&quot;: {&#xd;
+                &quot;resourceType&quot;: &quot;Specimen&quot;,&#xd;
+                &quot;id&quot;: &quot;758b7c5d-5935-4830-a15a-2440f7c29ef2&quot;,&#xd;
+                &quot;meta&quot;: {&#xd;
+                    &quot;profile&quot;: [&quot;https://demis.rki.de/fhir/igs/StructureDefinition/SpecimenSequence&quot;]&#xd;
+                },&#xd;
+                &quot;status&quot;: &quot;available&quot;,&#xd;
+                &quot;type&quot;: {&#xd;
+                    &quot;coding&quot;: [{&#xd;
+                            &quot;system&quot;: &quot;http://snomed.info/sct&quot;,&#xd;
+                            &quot;code&quot;: &quot;258604001&quot;,&#xd;
+                            &quot;display&quot;: &quot;Upper respiratory specimen (specimen)&quot;&#xd;
+                        }&#xd;
+                    ]&#xd;
+                },&#xd;
+                &quot;subject&quot;: {&#xd;
+                    &quot;reference&quot;: &quot;Patient/bb2997b1-c346-4cd7-9074-c7c1845614fa&quot;&#xd;
+                },&#xd;
+                &quot;receivedTime&quot;: &quot;2022-12-29T15:40:00+01:00&quot;,&#xd;
+                &quot;collection&quot;: {&#xd;
+                    &quot;collector&quot;: {&#xd;
+                        &quot;reference&quot;: &quot;PractitionerRole/81de9f86-0325-4d66-a8eb-b5351a79869f&quot;&#xd;
+                    },&#xd;
+                    &quot;collectedDateTime&quot;: &quot;2022-12-29T09:50:00+01:00&quot;&#xd;
+                },&#xd;
+                &quot;processing&quot;: [{&#xd;
+                        &quot;description&quot;: &quot;ARTICv4&quot;,&#xd;
+                        &quot;procedure&quot;: {&#xd;
+                            &quot;coding&quot;: [{&#xd;
+                                    &quot;system&quot;: &quot;https://demis.rki.de/fhir/igs/CodeSystem/sequencingStrategy&quot;,&#xd;
+                                    &quot;code&quot;: &quot;amplicon&quot;&#xd;
+                                }&#xd;
+                            ]&#xd;
+                        },&#xd;
+                        &quot;additive&quot;: [{&#xd;
+                                &quot;reference&quot;: &quot;Substance/959089d6-238d-4008-ac58-30b95bb10ad4&quot;&#xd;
+                            }&#xd;
+                        ],&#xd;
+                        &quot;timeDateTime&quot;: &quot;2023-01-13T10:40:00+01:00&quot;&#xd;
+                    }&#xd;
+                ]&#xd;
+            }&#xd;
+        }, {&#xd;
+            &quot;fullUrl&quot;: &quot;https://demis.rki.de/fhir/igs/Substance/959089d6-238d-4008-ac58-30b95bb10ad4&quot;,&#xd;
+            &quot;resource&quot;: {&#xd;
+                &quot;resourceType&quot;: &quot;Substance&quot;,&#xd;
+                &quot;id&quot;: &quot;959089d6-238d-4008-ac58-30b95bb10ad4&quot;,&#xd;
+                &quot;meta&quot;: {&#xd;
+                    &quot;profile&quot;: [&quot;https://demis.rki.de/fhir/igs/StructureDefinition/AdapterSubstance&quot;]&#xd;
+                },&#xd;
+                &quot;code&quot;: {&#xd;
+                    &quot;coding&quot;: [{&#xd;
+                            &quot;system&quot;: &quot;https://demis.rki.de/fhir/igs/CodeSystem/sequencingSubstances&quot;,&#xd;
+                            &quot;code&quot;: &quot;adapter&quot;,&#xd;
+                            &quot;display&quot;: &quot;Adapter Sequence&quot;&#xd;
+                        }&#xd;
+                    ]&#xd;
+                },&#xd;
+                &quot;description&quot;: &quot;TAGCGAGT&quot;&#xd;
+            }&#xd;
+        }, {&#xd;
+            &quot;fullUrl&quot;: &quot;https://demis.rki.de/fhir/igs/Observation/e5053065-b9ca-439d-9a9c-a5dbc272a5f1&quot;,&#xd;
+            &quot;resource&quot;: {&#xd;
+                &quot;resourceType&quot;: &quot;Observation&quot;,&#xd;
+                &quot;id&quot;: &quot;e5053065-b9ca-439d-9a9c-a5dbc272a5f1&quot;,&#xd;
+                &quot;meta&quot;: {&#xd;
+                    &quot;profile&quot;: [&quot;https://demis.rki.de/fhir/igs/StructureDefinition/PathogenDetectionSequence&quot;]&#xd;
+                },&#xd;
+                &quot;status&quot;: &quot;final&quot;,&#xd;
+                &quot;category&quot;: [{&#xd;
+                        &quot;coding&quot;: [{&#xd;
+                                &quot;system&quot;: &quot;http://terminology.hl7.org/CodeSystem/observation-category&quot;,&#xd;
+                                &quot;code&quot;: &quot;laboratory&quot;&#xd;
+                            }&#xd;
+                        ]&#xd;
+                    }&#xd;
+                ],&#xd;
+                &quot;code&quot;: {&#xd;
+                    &quot;coding&quot;: [{&#xd;
+                            &quot;system&quot;: &quot;http://loinc.org&quot;,&#xd;
+                            &quot;code&quot;: &quot;96741-4&quot;,&#xd;
+                            &quot;display&quot;: &quot;SARS-CoV-2 (COVID-19) variant Sequencing Nom (Specimen)&quot;&#xd;
+                        }&#xd;
+                    ]&#xd;
+                },&#xd;
+                &quot;subject&quot;: {&#xd;
+                    &quot;reference&quot;: &quot;Patient/bb2997b1-c346-4cd7-9074-c7c1845614fa&quot;&#xd;
+                },&#xd;
+                &quot;valueString&quot;: &quot;BA.5.1.28&quot;,&#xd;
+                &quot;interpretation&quot;: [{&#xd;
+                        &quot;coding&quot;: [{&#xd;
+                                &quot;system&quot;: &quot;http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation&quot;,&#xd;
+                                &quot;code&quot;: &quot;POS&quot;&#xd;
+                            }&#xd;
+                        ]&#xd;
+                    }&#xd;
+                ],&#xd;
+                &quot;method&quot;: {&#xd;
+                    &quot;coding&quot;: [{&#xd;
+                            &quot;system&quot;: &quot;http://snomed.info/sct&quot;,&#xd;
+                            &quot;code&quot;: &quot;117040002&quot;,&#xd;
+                            &quot;display&quot;: &quot;Nucleic acid sequencing (procedure)&quot;&#xd;
+                        }&#xd;
+                    ]&#xd;
+                },&#xd;
+                &quot;specimen&quot;: {&#xd;
+                    &quot;reference&quot;: &quot;Specimen/758b7c5d-5935-4830-a15a-2440f7c29ef2&quot;&#xd;
+                },&#xd;
+                &quot;device&quot;: {&#xd;
+                    &quot;reference&quot;: &quot;Device/ef347b22-def6-419a-825c-bcd95f88cdb2&quot;&#xd;
+                },&#xd;
+                &quot;derivedFrom&quot;: [{&#xd;
+                        &quot;reference&quot;: &quot;MolecularSequence/e69cd59f-a4e6-4086-a389-325c00ee6eac&quot;&#xd;
+                    }&#xd;
+                ]&#xd;
+            }&#xd;
+        }, {&#xd;
+            &quot;fullUrl&quot;: &quot;https://demis.rki.de/fhir/igs/MolecularSequence/e69cd59f-a4e6-4086-a389-325c00ee6eac&quot;,&#xd;
+            &quot;resource&quot;: {&#xd;
+                &quot;resourceType&quot;: &quot;MolecularSequence&quot;,&#xd;
+                &quot;id&quot;: &quot;e69cd59f-a4e6-4086-a389-325c00ee6eac&quot;,&#xd;
+                &quot;meta&quot;: {&#xd;
+                    &quot;profile&quot;: [&quot;https://demis.rki.de/fhir/igs/StructureDefinition/Sequence&quot;]&#xd;
+                },&#xd;
+                &quot;extension&quot;: [{&#xd;
+                        &quot;url&quot;: &quot;https://demis.rki.de/fhir/igs/StructureDefinition/SequenceAuthor&quot;,&#xd;
+                        &quot;valueString&quot;: &quot;Ralf Dürrwald, Stephan Fuchs, Stefan Kroeger, Marianne Wedde, Oliver Drechsel, Aleksandar Radonic, Rene Kmiecinski, Thorsten Wolff&quot;&#xd;
+                    }, {&#xd;
+                        &quot;url&quot;: &quot;https://demis.rki.de/fhir/igs/StructureDefinition/SequencingReason&quot;,&#xd;
+                        &quot;valueCoding&quot;: {&#xd;
+                            &quot;system&quot;: &quot;http://snomed.info/sct&quot;,&#xd;
+                            &quot;code&quot;: &quot;255226008&quot;,&#xd;
+                            &quot;display&quot;: &quot;Random (qualifier value)&quot;&#xd;
+                        }&#xd;
+                    }, {&#xd;
+                        &quot;url&quot;: &quot;https://demis.rki.de/fhir/igs/StructureDefinition/SequenceDocumentReference&quot;,&#xd;
+                        &quot;valueReference&quot;: {&#xd;
+                            &quot;reference&quot;: &quot;https://${BASE_URL}/surveillance/notification-sequence/fhir/DocumentReference/${extractedDocumentReferenceId}&quot;,&#xd;
+                            &quot;type&quot;: &quot;DocumentReference&quot;&#xd;
+                        }&#xd;
+                    }&#xd;
+                ],&#xd;
+                &quot;identifier&quot;: [{&#xd;
+                        &quot;value&quot;: &quot;A384&quot;&#xd;
+                    }&#xd;
+                ],&#xd;
+                &quot;type&quot;: &quot;dna&quot;,&#xd;
+                &quot;coordinateSystem&quot;: 0,&#xd;
+                &quot;specimen&quot;: {&#xd;
+                    &quot;reference&quot;: &quot;Specimen/758b7c5d-5935-4830-a15a-2440f7c29ef2&quot;&#xd;
+                },&#xd;
+                &quot;device&quot;: {&#xd;
+                    &quot;reference&quot;: &quot;Device/ef347b22-def6-419a-825c-bcd95f88cdb2&quot;&#xd;
+                },&#xd;
+                &quot;performer&quot;: {&#xd;
+                    &quot;reference&quot;: &quot;Organization/e6a96265-4e8b-4caa-b209-ee534ca8c7a2&quot;&#xd;
+                },&#xd;
+                &quot;repository&quot;: [{&#xd;
+                        &quot;extension&quot;: [{&#xd;
+                                &quot;url&quot;: &quot;https://demis.rki.de/fhir/igs/StructureDefinition/SequenceUploadDate&quot;,&#xd;
+                                &quot;valueDateTime&quot;: &quot;2023-02-10&quot;&#xd;
+                            }, {&#xd;
+                                &quot;url&quot;: &quot;https://demis.rki.de/fhir/igs/StructureDefinition/SequenceUploadSubmitter&quot;,&#xd;
+                                &quot;valueString&quot;: &quot;O Drechsel&quot;&#xd;
+                            }, {&#xd;
+                                &quot;url&quot;: &quot;https://demis.rki.de/fhir/igs/StructureDefinition/SequenceUploadStatus&quot;,&#xd;
+                                &quot;valueCoding&quot;: {&#xd;
+                                    &quot;system&quot;: &quot;http://snomed.info/sct&quot;,&#xd;
+                                    &quot;code&quot;: &quot;385645004&quot;&#xd;
+                                }&#xd;
+                            }&#xd;
+                        ],&#xd;
+                        &quot;type&quot;: &quot;other&quot;,&#xd;
+                        &quot;name&quot;: &quot;gisaid&quot;,&#xd;
+                        &quot;datasetId&quot;: &quot;EPI_ISL_16883504&quot;&#xd;
+                    }&#xd;
+                ]&#xd;
+            }&#xd;
+        }&#xd;
+    ]&#xd;
+}&#xd;
+</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                </elementProp>
+              </collectionProp>
+            </elementProp>
+          </HTTPSamplerProxy>
+          <hashTree>
+            <JSR223PreProcessor guiclass="TestBeanGUI" testclass="JSR223PreProcessor" testname="Get BASE_URL for IGS" enabled="true">
+              <stringProp name="scriptLanguage">groovy</stringProp>
+              <stringProp name="parameters"></stringProp>
+              <stringProp name="filename"></stringProp>
+              <stringProp name="cacheKey">true</stringProp>
+              <stringProp name="script">def serverName = ctx.getCurrentSampler().getPropertyAsString(&quot;HTTPSampler.domain&quot;)
+vars.put(&quot;BASE_URL&quot;, serverName)
+log.info(&quot;Server Name extracted: &quot; + serverName)
+</stringProp>
+              <stringProp name="TestPlan.comments">The valueReference of https://demis.rki.de/fhir/igs/StructureDefinition/SequenceDocumentReference needs to contain the correct Base URL</stringProp>
+            </JSR223PreProcessor>
+            <hashTree/>
+            <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="set plz ga token" enabled="true">
+              <boolProp name="resetInterpreter">false</boolProp>
+              <stringProp name="parameters"></stringProp>
+              <stringProp name="filename"></stringProp>
+              <stringProp name="script">//vars.put(&quot;PLZ&quot;,&quot;21481&quot;);
+//vars.put(&quot;GA&quot;,&quot;1.01.0.53.&quot;);
+vars.put(&quot;ACCESSTOKEN&quot;,props.get(&quot;AC_IGS&quot;));</stringProp>
+            </BeanShellPreProcessor>
+            <hashTree/>
+            <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="Reset ValidationStatus to Initial" enabled="true">
+              <stringProp name="scriptLanguage">groovy</stringProp>
+              <stringProp name="parameters"></stringProp>
+              <stringProp name="filename"></stringProp>
+              <stringProp name="cacheKey">true</stringProp>
+              <stringProp name="script">vars.put(&quot;extractedValidationStatus&quot;, &quot;INITIAL&quot;)
+vars.put(&quot;totalParts&quot;, &quot;&quot;)
+vars.put(&quot;uploadId&quot;, &quot;&quot;)
+vars.put(&quot;etag&quot;, &quot;&quot;)
+vars.put(&quot;presignedUrl&quot;, &quot;&quot;)
+vars.put(&quot;validationStatusTryCounter&quot;, &quot;1&quot;)</stringProp>
+            </JSR223PostProcessor>
+            <hashTree/>
+            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="token header" enabled="true">
+              <collectionProp name="HeaderManager.headers">
+                <elementProp name="" elementType="Header">
+                  <stringProp name="Header.name">Content-Type</stringProp>
+                  <stringProp name="Header.value">application/json; charset=UTF-8</stringProp>
+                </elementProp>
+                <elementProp name="" elementType="Header">
+                  <stringProp name="Header.name">Authorization</stringProp>
+                  <stringProp name="Header.value">Bearer ${ACCESSTOKEN}</stringProp>
+                </elementProp>
+                <elementProp name="" elementType="Header">
+                  <stringProp name="Header.name">User-Agent</stringProp>
+                  <stringProp name="Header.value">${USER_AGENT}</stringProp>
+                </elementProp>
+                <elementProp name="" elementType="Header">
+                  <stringProp name="Header.name">Accept</stringProp>
+                  <stringProp name="Header.value">application/json</stringProp>
+                </elementProp>
+              </collectionProp>
+            </HeaderManager>
+            <hashTree/>
+            <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="check data" enabled="false">
+              <stringProp name="JSON_PATH">$.parameter[0].resource.entry[3].resource.data</stringProp>
+              <stringProp name="EXPECTED_VALUE">^[-A-Za-z0-9+/]+={0,3}$</stringProp>
+              <boolProp name="JSONVALIDATION">true</boolProp>
+              <boolProp name="EXPECT_NULL">false</boolProp>
+              <boolProp name="INVERT">false</boolProp>
+              <boolProp name="ISREGEX">true</boolProp>
+            </JSONPathAssertion>
+            <hashTree/>
+          </hashTree>
+          <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="set user alias" enabled="true">
+            <boolProp name="resetInterpreter">false</boolProp>
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="script">vars.put(&quot;USER&quot;,&quot;11111&quot;);
+vars.put(&quot;certName&quot;,&quot;demis-11111&quot;);</stringProp>
+          </BeanShellPreProcessor>
+          <hashTree/>
+        </hashTree>
+        <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="RKI Last Updated">
+          <boolProp name="TransactionController.includeTimers">true</boolProp>
+        </TransactionController>
+        <hashTree>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="meldung abholen RKI lastupdate">
+            <intProp name="HTTPSampler.concurrentPool">6</intProp>
+            <stringProp name="HTTPSampler.contentEncoding">utf-8</stringProp>
+            <stringProp name="HTTPSampler.path">/notification-clearing-api/fhir/Bundle</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+            <stringProp name="HTTPSampler.method">GET</stringProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+            <boolProp name="HTTPSampler.postBodyRaw">false</boolProp>
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables">
+              <collectionProp name="Arguments.arguments">
+                <elementProp name="_lastUpdated" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">true</boolProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                  <stringProp name="Argument.name">_lastUpdated</stringProp>
+                  <stringProp name="Argument.value">ge${LASTUPDATED}</stringProp>
+                </elementProp>
+              </collectionProp>
+            </elementProp>
+          </HTTPSamplerProxy>
+          <hashTree>
+            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+              <collectionProp name="HeaderManager.headers">
+                <elementProp name="" elementType="Header">
+                  <stringProp name="Header.name">Authorization</stringProp>
+                  <stringProp name="Header.value">Bearer ${__property(AC_RKI)}</stringProp>
+                </elementProp>
+              </collectionProp>
+            </HeaderManager>
+            <hashTree/>
+            <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Extract Sequence Download UUIDs">
+              <stringProp name="RegexExtractor.useHeaders">false</stringProp>
+              <stringProp name="RegexExtractor.refname">extractedSequenceDocumentReferenceUuid</stringProp>
+              <stringProp name="RegexExtractor.regex">fhir\/DocumentReference/([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})</stringProp>
+              <stringProp name="RegexExtractor.template">$1$</stringProp>
+              <stringProp name="RegexExtractor.default">COULD NOT EXTRACT UUID</stringProp>
+              <boolProp name="RegexExtractor.default_empty_value">false</boolProp>
+              <stringProp name="RegexExtractor.match_number">-1</stringProp>
+            </RegexExtractor>
+            <hashTree/>
+          </hashTree>
+          <ForeachController guiclass="ForeachControlPanel" testclass="ForeachController" testname="for each download url" enabled="true">
+            <stringProp name="ForeachController.inputVal">extractedSequenceDocumentReferenceUuid</stringProp>
+            <stringProp name="ForeachController.returnVal">downloadUuid</stringProp>
+            <boolProp name="ForeachController.useSeparator">true</boolProp>
+          </ForeachController>
+          <hashTree>
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Download Sequence File Search" enabled="true">
+              <boolProp name="HTTPSampler.md5">true</boolProp>
+              <stringProp name="HTTPSampler.path">/surveillance/notification-sequence/fhir/DocumentReference/${downloadUuid}/$binary-access-read?path=DocumentReference.content.attachment</stringProp>
+              <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+              <stringProp name="HTTPSampler.method">GET</stringProp>
+              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+              <boolProp name="HTTPSampler.postBodyRaw">false</boolProp>
+              <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables">
+                <collectionProp name="Arguments.arguments"/>
+              </elementProp>
+            </HTTPSamplerProxy>
+            <hashTree>
+              <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="set token header" enabled="true">
+                <collectionProp name="HeaderManager.headers">
+                  <elementProp name="" elementType="Header">
+                    <stringProp name="Header.name">Authorization</stringProp>
+                    <stringProp name="Header.value">Bearer ${__property(AC_RKI)}</stringProp>
+                  </elementProp>
+                </collectionProp>
+              </HeaderManager>
+              <hashTree/>
+            </hashTree>
+          </hashTree>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="meldung abholen RKI" enabled="true">
+          <intProp name="HTTPSampler.concurrentPool">6</intProp>
+          <stringProp name="HTTPSampler.contentEncoding">utf-8</stringProp>
+          <stringProp name="HTTPSampler.path">/notification-clearing-api/fhir/Bundle</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <stringProp name="HTTPSampler.method">GET</stringProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.postBodyRaw">false</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="_tag" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">true</boolProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+                <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                <stringProp name="Argument.name">_tag</stringProp>
+                <stringProp name="Argument.value">https://demis.rki.de/fhir/CodeSystem/RelatedNotificationBundle|${BUNDLE_ID}</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+            <collectionProp name="HeaderManager.headers">
+              <elementProp name="" elementType="Header">
+                <stringProp name="Header.name">Authorization</stringProp>
+                <stringProp name="Header.value">Bearer ${__property(AC_RKI)}</stringProp>
+              </elementProp>
+            </collectionProp>
+          </HeaderManager>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="meldung abholen GA lastupdate" enabled="true">
+          <intProp name="HTTPSampler.concurrentPool">6</intProp>
+          <stringProp name="HTTPSampler.contentEncoding">utf-8</stringProp>
+          <stringProp name="HTTPSampler.path">/notification-clearing-api/fhir/Binary</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <stringProp name="HTTPSampler.method">GET</stringProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.postBodyRaw">false</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="_lastUpdated" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">true</boolProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+                <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                <stringProp name="Argument.name">_lastUpdated</stringProp>
+                <stringProp name="Argument.value">ge${LASTUPDATED}</stringProp>
+              </elementProp>
+              <elementProp name="_tag" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">true</boolProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+                <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                <stringProp name="Argument.name">_tag</stringProp>
+                <stringProp name="Argument.value">https://demis.rki.de/fhir/CodeSystem/ResponsibleDepartment|1.01.0.53.</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+            <collectionProp name="HeaderManager.headers">
+              <elementProp name="" elementType="Header">
+                <stringProp name="Header.name">Authorization</stringProp>
+                <stringProp name="Header.value">Bearer ${__property(AC_GA1)}</stringProp>
+              </elementProp>
+            </collectionProp>
+          </HeaderManager>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="meldung abholen GA" enabled="true">
+          <intProp name="HTTPSampler.concurrentPool">6</intProp>
+          <stringProp name="HTTPSampler.contentEncoding">utf-8</stringProp>
+          <stringProp name="HTTPSampler.path">/notification-clearing-api/fhir/Binary</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <stringProp name="HTTPSampler.method">GET</stringProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.postBodyRaw">false</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="_tag" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">true</boolProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+                <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                <stringProp name="Argument.name">_tag</stringProp>
+                <stringProp name="Argument.value">https://demis.rki.de/fhir/CodeSystem/RelatedNotificationBundle|${BUNDLE_ID}</stringProp>
+              </elementProp>
+              <elementProp name="_tag" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">true</boolProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+                <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                <stringProp name="Argument.name">_tag</stringProp>
+                <stringProp name="Argument.value">https://demis.rki.de/fhir/CodeSystem/ResponsibleDepartment|1.01.0.53.</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+            <collectionProp name="HeaderManager.headers">
+              <elementProp name="" elementType="Header">
+                <stringProp name="Header.name">Authorization</stringProp>
+                <stringProp name="Header.value">Bearer ${__property(AC_GA1)}</stringProp>
+              </elementProp>
+            </collectionProp>
+          </HeaderManager>
+          <hashTree/>
+        </hashTree>
+      </hashTree>
+      <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree">
+        <boolProp name="ResultCollector.error_logging">false</boolProp>
+        <objProp>
+          <name>saveConfig</name>
+          <value class="SampleSaveConfiguration">
+            <time>true</time>
+            <latency>true</latency>
+            <timestamp>true</timestamp>
+            <success>true</success>
+            <label>true</label>
+            <code>true</code>
+            <message>true</message>
+            <threadName>true</threadName>
+            <dataType>true</dataType>
+            <encoding>false</encoding>
+            <assertions>true</assertions>
+            <subresults>true</subresults>
+            <responseData>false</responseData>
+            <samplerData>false</samplerData>
+            <xml>false</xml>
+            <fieldNames>true</fieldNames>
+            <responseHeaders>false</responseHeaders>
+            <requestHeaders>false</requestHeaders>
+            <responseDataOnError>false</responseDataOnError>
+            <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+            <assertionsResultsToSave>0</assertionsResultsToSave>
+            <bytes>true</bytes>
+            <sentBytes>true</sentBytes>
+            <url>true</url>
+            <threadCounts>true</threadCounts>
+            <idleTime>true</idleTime>
+            <connectTime>true</connectTime>
+          </value>
+        </objProp>
+        <stringProp name="filename"></stringProp>
+      </ResultCollector>
+      <hashTree/>
+      <ResultCollector guiclass="SummaryReport" testclass="ResultCollector" testname="Summary Report" enabled="true">
+        <boolProp name="ResultCollector.error_logging">false</boolProp>
+        <objProp>
+          <name>saveConfig</name>
+          <value class="SampleSaveConfiguration">
+            <time>true</time>
+            <latency>true</latency>
+            <timestamp>true</timestamp>
+            <success>true</success>
+            <label>true</label>
+            <code>true</code>
+            <message>true</message>
+            <threadName>true</threadName>
+            <dataType>true</dataType>
+            <encoding>false</encoding>
+            <assertions>true</assertions>
+            <subresults>true</subresults>
+            <responseData>false</responseData>
+            <samplerData>false</samplerData>
+            <xml>false</xml>
+            <fieldNames>true</fieldNames>
+            <responseHeaders>false</responseHeaders>
+            <requestHeaders>false</requestHeaders>
+            <responseDataOnError>false</responseDataOnError>
+            <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+            <assertionsResultsToSave>0</assertionsResultsToSave>
+            <bytes>true</bytes>
+            <sentBytes>true</sentBytes>
+            <url>true</url>
+            <threadCounts>true</threadCounts>
+            <idleTime>true</idleTime>
+            <connectTime>true</connectTime>
+          </value>
+        </objProp>
+        <stringProp name="filename"></stringProp>
+      </ResultCollector>
+      <hashTree/>
+    </hashTree>
+  </hashTree>
+</jmeterTestPlan>
