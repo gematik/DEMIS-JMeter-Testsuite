@@ -18,7 +18,7 @@
         <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
       </ConfigTestElement>
       <hashTree/>
-      <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="IGS FilePath">
+      <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="IGS FilePath" enabled="true">
         <collectionProp name="Arguments.arguments">
           <elementProp name="fastaFilePath" elementType="Argument">
             <stringProp name="Argument.name">fastaFilePath</stringProp>
@@ -509,7 +509,7 @@ props.put(&quot;global_igs_token&quot;, token)</stringProp>
           <hashTree/>
         </hashTree>
       </hashTree>
-      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="RUN" enabled="true">
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="RUN">
         <intProp name="ThreadGroup.num_threads">1</intProp>
         <intProp name="ThreadGroup.ramp_time">1</intProp>
         <boolProp name="ThreadGroup.same_user_on_next_iteration">true</boolProp>
@@ -1579,11 +1579,11 @@ props.put(&quot;global_igs_token&quot;, token)</stringProp>
           </JSONPostProcessor>
           <hashTree/>
         </hashTree>
-        <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="IGS Transaction">
+        <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="IGS Transaction" enabled="true">
           <boolProp name="TransactionController.includeTimers">false</boolProp>
         </TransactionController>
         <hashTree>
-          <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="IGS Variables">
+          <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="IGS Variables" enabled="true">
             <collectionProp name="Arguments.arguments">
               <elementProp name="hashedValue" elementType="Argument">
                 <stringProp name="Argument.name">hashedValue</stringProp>
@@ -1690,7 +1690,7 @@ props.put(&quot;global_igs_token&quot;, token)</stringProp>
             </elementProp>
           </HTTPSamplerProxy>
           <hashTree>
-            <JSR223PreProcessor guiclass="TestBeanGUI" testclass="JSR223PreProcessor" testname="CreateHashFromFile">
+            <JSR223PreProcessor guiclass="TestBeanGUI" testclass="JSR223PreProcessor" testname="CreateHashFromFile" enabled="true">
               <stringProp name="cacheKey">true</stringProp>
               <stringProp name="filename"></stringProp>
               <stringProp name="parameters"></stringProp>
@@ -2020,7 +2020,7 @@ vars.put(&quot;ACCESSTOKEN&quot;,props.get(&quot;AC_IGS&quot;));</stringProp>
               </hashTree>
             </hashTree>
           </hashTree>
-          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="POST IGS Meldung FastA" enabled="true">
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="POST IGS Meldung FastA">
             <intProp name="HTTPSampler.concurrentPool">6</intProp>
             <stringProp name="HTTPSampler.contentEncoding">utf-8</stringProp>
             <stringProp name="HTTPSampler.path">/surveillance/notification-sequence/fhir/%24process-notification-sequence</stringProp>
@@ -2068,6 +2068,7 @@ vars.put(&quot;ACCESSTOKEN&quot;,props.get(&quot;AC_IGS&quot;));</stringProp>
                 &quot;type&quot;: {&#xd;
                     &quot;coding&quot;: [{&#xd;
                             &quot;system&quot;: &quot;http://loinc.org&quot;,&#xd;
+							&quot;version&quot;: &quot;2.79&quot;,&#xd;
                             &quot;code&quot;: &quot;34782-3&quot;,&#xd;
                             &quot;display&quot;: &quot;Infectious disease Note&quot;&#xd;
                         }&#xd;
@@ -2076,6 +2077,7 @@ vars.put(&quot;ACCESSTOKEN&quot;,props.get(&quot;AC_IGS&quot;));</stringProp>
                 &quot;category&quot;: [{&#xd;
                         &quot;coding&quot;: [{&#xd;
                                 &quot;system&quot;: &quot;http://loinc.org&quot;,&#xd;
+								&quot;version&quot;: &quot;2.79&quot;,&#xd;
                                 &quot;code&quot;: &quot;11502-2&quot;,&#xd;
                                 &quot;display&quot;: &quot;Laboratory report&quot;&#xd;
                             }&#xd;
@@ -2106,6 +2108,7 @@ vars.put(&quot;ACCESSTOKEN&quot;,props.get(&quot;AC_IGS&quot;));</stringProp>
                         &quot;code&quot;: {&#xd;
                             &quot;coding&quot;: [{&#xd;
                                     &quot;system&quot;: &quot;http://loinc.org&quot;,&#xd;
+									&quot;version&quot;: &quot;2.79&quot;,&#xd;
                                     &quot;code&quot;: &quot;11502-2&quot;,&#xd;
                                     &quot;display&quot;: &quot;Laboratory report&quot;&#xd;
                                 }&#xd;
@@ -2124,8 +2127,38 @@ vars.put(&quot;ACCESSTOKEN&quot;,props.get(&quot;AC_IGS&quot;));</stringProp>
                 &quot;resourceType&quot;: &quot;Patient&quot;,&#xd;
                 &quot;id&quot;: &quot;bb2997b1-c346-4cd7-9074-c7c1845614fa&quot;,&#xd;
                 &quot;meta&quot;: {&#xd;
-                    &quot;profile&quot;: [&quot;https://demis.rki.de/fhir/StructureDefinition/NotifiedPersonNotByName&quot;]&#xd;
-                }&#xd;
+                    &quot;profile&quot;: [&#xd;
+                        &quot;https://demis.rki.de/fhir/StructureDefinition/NotifiedPersonAnonymous&quot;&#xd;
+                    ]&#xd;
+                },&#xd;
+                &quot;gender&quot;: &quot;other&quot;,&#xd;
+                &quot;_gender&quot;: {&#xd;
+                    &quot;extension&quot;: [&#xd;
+                        {&#xd;
+                            &quot;url&quot;: &quot;http://fhir.de/StructureDefinition/gender-amtlich-de&quot;,&#xd;
+                            &quot;valueCoding&quot;: {&#xd;
+                                &quot;system&quot;: &quot;http://fhir.de/CodeSystem/gender-amtlich-de&quot;,&#xd;
+                                &quot;code&quot;: &quot;X&quot;&#xd;
+                            }&#xd;
+                        }&#xd;
+                    ]&#xd;
+                },&#xd;
+                &quot;birthDate&quot;: &quot;1972-11&quot;,&#xd;
+                &quot;address&quot;: [&#xd;
+                    {&#xd;
+                        &quot;extension&quot;: [&#xd;
+                            {&#xd;
+                                &quot;url&quot;: &quot;https://demis.rki.de/fhir/StructureDefinition/AddressUse&quot;,&#xd;
+                                &quot;valueCoding&quot;: {&#xd;
+                                    &quot;system&quot;: &quot;https://demis.rki.de/fhir/CodeSystem/addressUse&quot;,&#xd;
+                                    &quot;code&quot;: &quot;primary&quot;,&#xd;
+                                    &quot;display&quot;: &quot;Hauptwohnsitz&quot;&#xd;
+                                }&#xd;
+                            }&#xd;
+                        ],&#xd;
+                        &quot;postalCode&quot;: &quot;130&quot;&#xd;
+                    }&#xd;
+                ]&#xd;
             }&#xd;
         }, {&#xd;
             &quot;fullUrl&quot;: &quot;https://demis.rki.de/fhir/igs/PractitionerRole/2d6bdb88-b8f6-4fb4-9f8e-f851b2e88e36&quot;,&#xd;
@@ -2306,6 +2339,7 @@ vars.put(&quot;ACCESSTOKEN&quot;,props.get(&quot;AC_IGS&quot;));</stringProp>
                 &quot;type&quot;: {&#xd;
                     &quot;coding&quot;: [{&#xd;
                             &quot;system&quot;: &quot;http://snomed.info/sct&quot;,&#xd;
+							&quot;version&quot;: &quot;http://snomed.info/sct/11000274103/version/20241115&quot;,&#xd;
                             &quot;code&quot;: &quot;258604001&quot;,&#xd;
                             &quot;display&quot;: &quot;Upper respiratory specimen (specimen)&quot;&#xd;
                         }&#xd;
@@ -2376,6 +2410,7 @@ vars.put(&quot;ACCESSTOKEN&quot;,props.get(&quot;AC_IGS&quot;));</stringProp>
                 &quot;code&quot;: {&#xd;
                     &quot;coding&quot;: [{&#xd;
                             &quot;system&quot;: &quot;http://loinc.org&quot;,&#xd;
+							&quot;version&quot;: &quot;2.79&quot;,&#xd;
                             &quot;code&quot;: &quot;96741-4&quot;,&#xd;
                             &quot;display&quot;: &quot;SARS-CoV-2 (COVID-19) variant Sequencing Nom (Specimen)&quot;&#xd;
                         }&#xd;
@@ -2396,6 +2431,7 @@ vars.put(&quot;ACCESSTOKEN&quot;,props.get(&quot;AC_IGS&quot;));</stringProp>
                 &quot;method&quot;: {&#xd;
                     &quot;coding&quot;: [{&#xd;
                             &quot;system&quot;: &quot;http://snomed.info/sct&quot;,&#xd;
+							&quot;version&quot;: &quot;http://snomed.info/sct/11000274103/version/20241115&quot;,&#xd;
                             &quot;code&quot;: &quot;117040002&quot;,&#xd;
                             &quot;display&quot;: &quot;Nucleic acid sequencing (procedure)&quot;&#xd;
                         }&#xd;
@@ -2427,6 +2463,7 @@ vars.put(&quot;ACCESSTOKEN&quot;,props.get(&quot;AC_IGS&quot;));</stringProp>
                         &quot;url&quot;: &quot;https://demis.rki.de/fhir/igs/StructureDefinition/SequencingReason&quot;,&#xd;
                         &quot;valueCoding&quot;: {&#xd;
                             &quot;system&quot;: &quot;http://snomed.info/sct&quot;,&#xd;
+							&quot;version&quot;: &quot;http://snomed.info/sct/11000274103/version/20241115&quot;,&#xd;
                             &quot;code&quot;: &quot;255226008&quot;,&#xd;
                             &quot;display&quot;: &quot;Random (qualifier value)&quot;&#xd;
                         }&#xd;
@@ -2464,6 +2501,7 @@ vars.put(&quot;ACCESSTOKEN&quot;,props.get(&quot;AC_IGS&quot;));</stringProp>
                                 &quot;url&quot;: &quot;https://demis.rki.de/fhir/igs/StructureDefinition/SequenceUploadStatus&quot;,&#xd;
                                 &quot;valueCoding&quot;: {&#xd;
                                     &quot;system&quot;: &quot;http://snomed.info/sct&quot;,&#xd;
+									&quot;version&quot;: &quot;http://snomed.info/sct/11000274103/version/20241115&quot;,&#xd;
                                     &quot;code&quot;: &quot;385645004&quot;&#xd;
                                 }&#xd;
                             }&#xd;
@@ -2558,11 +2596,11 @@ vars.put(&quot;certName&quot;,&quot;demis-11111&quot;);</stringProp>
           </BeanShellPreProcessor>
           <hashTree/>
         </hashTree>
-        <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="RKI Last Updated">
+        <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="RKI Last Updated" enabled="true">
           <boolProp name="TransactionController.includeTimers">true</boolProp>
         </TransactionController>
         <hashTree>
-          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="meldung abholen RKI lastupdate">
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="meldung abholen RKI lastupdate" enabled="true">
             <intProp name="HTTPSampler.concurrentPool">6</intProp>
             <stringProp name="HTTPSampler.contentEncoding">utf-8</stringProp>
             <stringProp name="HTTPSampler.path">/notification-clearing-api/fhir/Bundle</stringProp>
@@ -2592,7 +2630,7 @@ vars.put(&quot;certName&quot;,&quot;demis-11111&quot;);</stringProp>
               </collectionProp>
             </HeaderManager>
             <hashTree/>
-            <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Extract Sequence Download UUIDs">
+            <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Extract Sequence Download UUIDs" enabled="true">
               <stringProp name="RegexExtractor.useHeaders">false</stringProp>
               <stringProp name="RegexExtractor.refname">extractedSequenceDocumentReferenceUuid</stringProp>
               <stringProp name="RegexExtractor.regex">fhir\/DocumentReference/([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})</stringProp>
@@ -2741,7 +2779,7 @@ vars.put(&quot;certName&quot;,&quot;demis-11111&quot;);</stringProp>
           <hashTree/>
         </hashTree>
       </hashTree>
-      <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree">
+      <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
         <boolProp name="ResultCollector.error_logging">false</boolProp>
         <objProp>
           <name>saveConfig</name>

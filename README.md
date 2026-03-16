@@ -1,7 +1,7 @@
-<img align="right" width="250" height="47" src="../media/Gematik_Logo_Flag.png"/> <br/>
+<img align="right" width="250" height="47" src="./media/Gematik_Logo_Flag.png"/> <br/>
 
 
-# JMeter
+# JMeter-Testsuite
 
 <details>
   <summary>Table of Contents</summary>
